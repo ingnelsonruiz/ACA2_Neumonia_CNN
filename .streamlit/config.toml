@@ -1,7 +1,74 @@
+# Identidad «negatoscopio»: caja de luz fría, tinta azul de película y un único acento rojo.
+# El tema nativo reemplaza la mayor parte del CSS: colores, tipografía, bordes y barra lateral.
+
+[client]
+toolbarMode = "viewer"          # oculta «Deploy» y el menú de desarrollador al público
+
+[server]
+enableStaticServing = true      # sirve static/ (fuentes)
+
 [theme]
 base = "light"
-backgroundColor = "#EEF3F7"
-secondaryBackgroundColor = "#FFFFFF"
-primaryColor = "#1F5F8B"
+primaryColor = "#1F5F8B"        # azul película
+backgroundColor = "#F4F8FB"     # panel luminoso
+secondaryBackgroundColor = "#E3ECF2"
 textColor = "#0F2A3D"
-font = "sans serif"
+linkColor = "#1F5F8B"
+borderColor = "#C9D6DF"
+# Fuentes autoalojadas en static/fonts (licencia OFL): no dependen de Google Fonts
+font = "Archivo, sans-serif"
+headingFont = "Archivo Narrow, Archivo, sans-serif"
+codeFont = "JetBrains Mono, monospace"
+headingFontWeights = [700, 700, 700, 600, 600, 600]
+metricValueFontWeight = 700
+baseRadius = "6px"
+linkUnderline = false
+
+redColor = "#D93636"            # marcador «R» · NEUMONÍA
+greenColor = "#1D8F7A"          # tejido sano · NORMAL
+blueColor = "#1F5F8B"
+orangeColor = "#C98A12"         # umbral
+violetColor = "#6A7FA3"
+grayColor = "#4A6274"
+
+chartCategoricalColors = ["#1F5F8B", "#D93636", "#1D8F7A", "#C98A12", "#6A7FA3", "#E0702A", "#8FA3B3"]
+dataframeHeaderBackgroundColor = "#E1E9EF"
+dataframeHeaderTextColor = "#0F2A3D"
+dataframeBorderColor = "#C9D6DF"
+
+[[theme.fontFaces]]
+family = "Archivo"
+url = "app/static/fonts/archivo-variable.woff2"
+weight = "100 900"
+unicodeRange = "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+
+[[theme.fontFaces]]
+family = "Archivo"
+url = "app/static/fonts/archivo-variable-ext.woff2"
+weight = "100 900"
+unicodeRange = "U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+1E00-1E9F, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF"
+
+[[theme.fontFaces]]
+family = "Archivo Narrow"
+url = "app/static/fonts/archivo-narrow-600.woff2"
+weight = "600"
+
+[[theme.fontFaces]]
+family = "Archivo Narrow"
+url = "app/static/fonts/archivo-narrow-700.woff2"
+weight = "700"
+
+[[theme.fontFaces]]
+family = "JetBrains Mono"
+url = "app/static/fonts/jetbrains-mono-variable.woff2"
+weight = "100 800"
+
+[theme.sidebar]
+backgroundColor = "#0F2A3D"
+secondaryBackgroundColor = "#1A3A52"
+textColor = "#DCE7EF"
+borderColor = "#2D4D66"
+primaryColor = "#7FB8E6"
+linkColor = "#9FD1FF"
+codeBackgroundColor = "#1A3A52"
+codeTextColor = "#DCE7EF"
