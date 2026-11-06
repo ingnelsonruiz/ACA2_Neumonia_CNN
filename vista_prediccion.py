@@ -5,7 +5,7 @@ import streamlit as st
 
 from config import AMBER, CYAN, GREEN, PINK
 from modelo import cargar_imagen_gris, clase_predicha, parece_radiografia, predecir, superponer
-from ui import estilo, imagen, mostrar, panel, seccion
+from ui import estilo, imagen, mostrar, panel
 
 
 def _medidor(prob, umbral):
@@ -16,11 +16,12 @@ def _medidor(prob, umbral):
                    steps=[dict(range=[0, umbral * 100], color="rgba(29,143,122,0.14)"),
                           dict(range=[umbral * 100, 100], color="rgba(217,54,54,0.14)")],
                    threshold=dict(line=dict(color=AMBER, width=4), value=umbral * 100))))
-    return estilo(fig, alto=300)
+    fig = estilo(fig, alto=300)
+    fig.update_layout(margin=dict(l=35, r=35, t=40, b=10))
+    return fig
 
 
 def render(ctx):
-    seccion("ANALIZAR UNA RADIOGRAFÍA")
     fuente = st.radio("Origen de la imagen", ["Ejemplos del conjunto de prueba", "Subir radiografía"],
                       horizontal=True)
     if fuente == "Subir radiografía":
@@ -38,7 +39,10 @@ def render(ctx):
         if not ctx.ejemplos:
             st.info("No hay ejemplos disponibles en artefactos/ejemplos.")
             return
-        nombre = st.selectbox("Radiografía", [e.name for e in ctx.ejemplos])
+        nombres = [e.name for e in ctx.ejemplos]
+        # Abre con un caso ilustrativo (activación dentro del pulmón) si existe
+        inicial = next((nombres.index(n) for n in ("virus_2.jpeg", "bacteria_2.jpeg") if n in nombres), 0)
+        nombre = st.selectbox("Radiografía", nombres, index=inicial)
         origen = next(e for e in ctx.ejemplos if e.name == nombre)
         etiqueta_real = "NORMAL" if nombre.startswith("normal") else "NEUMONIA"
 
@@ -57,7 +61,7 @@ def render(ctx):
         css = "veredicto-m" if clase == "NEUMONIA" else "veredicto-b"
         st.markdown(f'<div class="{css}">{"NEUMONÍA" if clase == "NEUMONIA" else "NORMAL"}</div>',
                     unsafe_allow_html=True)
-        st.caption(f"Umbral activo {ctx.umbral:.2f} · inferencia {r.milisegundos:.0f} ms en CPU")
+        st.caption(f"Umbral activo {ctx.umbral:.2f}, inferencia en {r.milisegundos:.0f} ms en CPU".replace(".", ","))
         if etiqueta_real:
             acierto = etiqueta_real == clase
             st.markdown(f"**Etiqueta real:** {etiqueta_real} {'✅' if acierto else '❌'}")

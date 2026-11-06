@@ -39,6 +39,7 @@ def estilo(fig, alto=420, titulo=None):
         title=dict(text=oracion(titulo), font=dict(size=17, color="#0F2A3D")) if titulo else None,
         legend=dict(bgcolor="rgba(255,255,255,0.85)", bordercolor="#C9D6DF", borderwidth=1),
         hoverlabel=dict(bgcolor="#0F2A3D", font_color="#FFFFFF"),
+        separators=",.",
     )
     fig.update_xaxes(gridcolor="#E1E9EF", zerolinecolor="#C9D6DF", linecolor="#C9D6DF")
     fig.update_yaxes(gridcolor="#E1E9EF", zerolinecolor="#C9D6DF", linecolor="#C9D6DF")

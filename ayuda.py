@@ -86,9 +86,13 @@ convolucional (EfficientNet-B0 ajustada por transfer learning) y muestra un **ma
 que indica en qué zonas de la imagen se apoyó la decisión. Es un prototipo académico: **no es un
 dispositivo médico ni sustituye el criterio de un radiólogo.**
 
-## 2. Pestañas
-| Pestaña | Qué encuentra |
+## 2. Organización de la aplicación
+Debajo de la portada está **Pruebe el modelo** (paso 5 del ACA): la herramienta de predicción. Más abajo,
+**Recorrido del proyecto** muestra una tarjeta por sección; al hacer clic se abre su contenido.
+
+| Sección | Qué encuentra |
 |---|---|
+| Informe del proceso | El proyecto completo a nivel académico: decisiones, resultados con intervalos de confianza, limitaciones y referencias APA 7 |
 | La historia | Problema, pregunta orientadora y flujo metodológico |
 | El dataset | Origen, distribución de clases, duplicados y partición por paciente |
 | Consultas SQL | Exploración de la base DuckDB con consultas predefinidas o propias (solo lectura) |
@@ -97,11 +101,10 @@ dispositivo médico ni sustituye el criterio de un radiólogo.**
 | Entrenamiento | Curvas de pérdida, exactitud, F1 y AUC por época |
 | Métricas | Resultados en el conjunto de prueba, matriz de confusión, ROC y desempeño por subtipo |
 | Umbral clínico | Efecto de mover el punto de corte sobre sensibilidad y especificidad |
-| Predicción | Cargue una radiografía (o use un ejemplo) y obtenga probabilidad, decisión y mapa de calor |
 | Documentación | Este manual y el glosario |
 
 ## 3. Cómo hacer una predicción
-1. Vaya a **Predicción**.
+1. Vaya al bloque **Pruebe el modelo**, justo debajo de la portada.
 2. Elija una radiografía de ejemplo (del conjunto de prueba, nunca vista en entrenamiento) o suba
    un archivo JPG/PNG de una radiografía de tórax anteroposterior.
 3. Revise la probabilidad de neumonía, la decisión según el umbral activo (barra lateral; por

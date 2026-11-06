@@ -30,21 +30,44 @@ from modelo import cargar_imagen_gris, construir_contexto, predecir, superponer 
 from ui import kpi, panel                                                        # noqa: E402
 import vista_arquitectura, vista_dataset, vista_documentacion, vista_entrenamiento  # noqa: E402
 import vista_equipo, vista_historia, vista_metricas, vista_pipeline              # noqa: E402
-import vista_prediccion, vista_sql, vista_umbral                                 # noqa: E402
+import vista_informe, vista_prediccion, vista_sql, vista_umbral                  # noqa: E402
 
-PESTANAS = [
-    ("La historia", vista_historia),
-    ("El dataset", vista_dataset),
-    ("Consultas SQL", vista_sql),
-    ("Pipeline", vista_pipeline),
-    ("Arquitectura", vista_arquitectura),
-    ("Entrenamiento", vista_entrenamiento),
-    ("Métricas", vista_metricas),
-    ("Umbral clínico", vista_umbral),
-    ("Predicción", vista_prediccion),
-    ("Equipo", vista_equipo),
-    ("Documentación", vista_documentacion),
+# Recorrido del proyecto: (clave, título, paso del ACA, qué contiene, criterio de la rúbrica, módulo).
+# El orden sigue el flujo metodológico del ACA. Para agregar una sección, añada una tupla aquí.
+SECCIONES = [
+    ("informe", "Informe del proceso", "Documento completo",
+     "El proyecto de punta a punta: decisiones, resultados con intervalos de confianza, limitaciones y referencias.",
+     "Todos los criterios", vista_informe),
+    ("historia", "La historia", "Contexto",
+     "El problema clínico, la pregunta orientadora y el flujo de cinco pasos.", "Pregunta orientadora", vista_historia),
+    ("dataset", "El dataset", "Paso 1",
+     "Origen de las radiografías, duplicados eliminados, desbalance y partición por paciente.",
+     "Calidad de datos, 20 %", vista_dataset),
+    ("sql", "Consultas SQL", "Paso 1",
+     "La base DuckDB del proyecto: consultas en vivo de solo lectura sobre imágenes, particiones y errores.",
+     "Calidad de datos, 20 %", vista_sql),
+    ("pipeline", "Pipeline", "Paso 2",
+     "Preprocesamiento y laboratorio: altere una radiografía y vea si el modelo cambia de opinión.",
+     "Preprocesamiento, 20 %", vista_pipeline),
+    ("arquitectura", "Arquitectura", "Paso 3",
+     "CNN desde cero frente a EfficientNet-B0, transfer learning en dos fases y mapas de activación.",
+     "Arquitectura neuronal, 20 %", vista_arquitectura),
+    ("entrenamiento", "Entrenamiento", "Paso 3",
+     "Curvas de pérdida, exactitud, F1 y AUC por época, y la época elegida.",
+     "Arquitectura neuronal, 20 %", vista_entrenamiento),
+    ("metricas", "Métricas", "Paso 4",
+     "Resultados en prueba: matriz de confusión, curva ROC, comparación de modelos y subtipos.",
+     "Métricas de evaluación, 15 %", vista_metricas),
+    ("umbral", "Umbral clínico", "Paso 4",
+     "Cómo cambian sensibilidad y especificidad al mover el punto de corte.",
+     "Métricas de evaluación, 15 %", vista_umbral),
+    ("equipo", "Equipo", "Créditos", "Integrantes, alcance y tecnologías del proyecto.", "Póster y video", vista_equipo),
+    ("documentacion", "Documentación", "Manual",
+     "Manual de uso descargable y glosario de cada indicador.", "Reproducibilidad", vista_documentacion),
 ]
+FILAS = [["informe", "historia", "dataset"], ["sql", "pipeline", "arquitectura", "entrenamiento"],
+         ["metricas", "umbral", "equipo", "documentacion"]]
+ANCHOS = {"informe": 2}
 
 
 def barra_lateral(ctx):
@@ -156,6 +179,58 @@ def encabezado(ctx):
     expansor_indicadores(["Sensibilidad (recall)", "Especificidad", "F1", "ROC-AUC"])
 
 
+def bloque_prediccion(ctx):
+    """El paso 5 del ACA en primer plano: la herramienta que demuestra el modelo entrenado."""
+    st.markdown('''
+<div class="demo-cab" id="probar">
+  <div class="demo-paso">Paso 5: despliegue, 15 % de la nota</div>
+  <h2>Pruebe el modelo</h2>
+  <p>Elija una radiografía del conjunto de prueba o suba la suya. El modelo responde en milisegundos con la
+  probabilidad de neumonía, la decisión según el umbral de la barra lateral y el mapa de calor de las zonas
+  que motivaron su respuesta.</p>
+</div>''', unsafe_allow_html=True)
+    with st.container(key="demo"):
+        vista_prediccion.render(ctx)
+
+
+def _tarjeta_nav(clave, titulo, paso, texto, nota, activa):
+    with st.container(key=f"nav_{clave}"):
+        st.markdown(f'''
+<div class="nav-card{' activa' if activa else ''}">
+  <div class="nav-paso">{paso}</div>
+  <div class="nav-titulo">{titulo}</div>
+  <p>{texto}</p>
+  <div class="nav-nota">{nota}</div>
+</div>''', unsafe_allow_html=True)
+        st.button(f"Abrir {titulo}", key=f"btn_{clave}", on_click=st.session_state.__setitem__,
+                  args=("seccion", clave))
+
+
+def recorrido(ctx):
+    st.markdown('''
+<div class="nav-cab">
+  <h2>Recorrido del proyecto</h2>
+  <p>Cada tarjeta corresponde a un paso del ACA. Haga clic para abrir su contenido debajo.</p>
+</div>''', unsafe_allow_html=True)
+    actual = st.session_state.setdefault("seccion", "informe")
+    por_clave = {s[0]: s for s in SECCIONES}
+    for fila in FILAS:
+        cols = st.columns([ANCHOS.get(c, 1) for c in fila], gap="small")
+        for col, clave in zip(cols, fila):
+            _, titulo, paso, texto, nota, _ = por_clave[clave]
+            with col:
+                _tarjeta_nav(clave, titulo, paso, texto, nota, clave == actual)
+
+    _, titulo, paso, texto, nota, modulo = por_clave[actual]
+    st.markdown(f'''
+<div class="sec-cab" id="contenido">
+  <div class="nav-paso">{paso} <span class="nav-nota">{nota}</span></div>
+  <h2>{titulo}</h2>
+  <p>{texto}</p>
+</div>''', unsafe_allow_html=True)
+    modulo.render(ctx)
+
+
 def main():
     estilos.aplicar()
     with st.spinner("Cargando modelo y metadatos..."):
@@ -171,10 +246,8 @@ def main():
         vista_documentacion.render(ctx)
         return
 
-    pestanas = st.tabs([etiqueta for etiqueta, _ in PESTANAS])
-    for contenedor, (_, modulo) in zip(pestanas, PESTANAS):
-        with contenedor:
-            modulo.render(ctx)
+    bloque_prediccion(ctx)
+    recorrido(ctx)
 
     st.markdown(f'<div class="aviso">{TITULO_APP}, {PROYECTO}, {GRUPO}. Prototipo académico: no sustituye '
                 f'el diagnóstico de un profesional de la salud.</div>', unsafe_allow_html=True)

@@ -211,6 +211,72 @@ section[data-testid="stSidebar"] a { color: #9FD1FF !important; }
 /* Expansores */
 [data-testid="stExpander"] { background: #FFFFFF; border: 1px solid var(--plomo) !important; border-radius: 4px; }
 [data-testid="stExpander"] summary p { font-weight: 600 !important; }
+/* ── Bloque «Pruebe el modelo» (paso 5 en primer plano) ───────────────── */
+.demo-cab { margin: 0.6rem 0 0.8rem; max-width: 900px; }
+.demo-cab h2, .nav-cab h2, .sec-cab h2 {
+    font-stretch: 68%; font-variation-settings: "wdth" 68; font-weight: 850; color: var(--tinta);
+    font-size: clamp(2.2rem, 4vw, 3.2rem); line-height: 0.95; margin: 0.2rem 0 0.5rem; padding: 0;
+}
+.demo-cab p, .nav-cab p, .sec-cab p { color: var(--tinta-2); font-size: 1.08rem; max-width: 70ch; margin: 0; }
+.demo-paso, .nav-paso { font-size: 0.85rem; font-weight: 700; color: var(--azul); }
+.demo-paso { color: var(--rojo); }
+.st-key-demo {
+    background: #FFFFFF; border: 1px solid var(--plomo); border-top: 6px solid var(--rojo); border-radius: 6px;
+    padding: 1.2rem 1.4rem 1.4rem; box-shadow: 0 24px 50px -34px rgba(15,42,61,0.55); margin-bottom: 2.6rem;
+}
+
+/* ── Recorrido: tarjetas que funcionan como botones ───────────────────── */
+.nav-cab { margin: 1rem 0 0.9rem; padding-top: 1.2rem; border-top: 2px solid var(--tinta); }
+[class*="st-key-nav_"] { position: relative; height: 100%; gap: 0 !important; }
+[class*="st-key-nav_"] [data-testid="stElementContainer"]:has(.stButton),
+[class*="st-key-nav_"] .stButton {
+    position: absolute !important; inset: 0; margin: 0 !important; z-index: 3; height: 100%;
+}
+[class*="st-key-nav_"] .stButton button {
+    width: 100%; height: 100%; min-height: 100%; opacity: 0; cursor: pointer; border: none;
+}
+.nav-card {
+    background: #FFFFFF; border: 1px solid var(--plomo); border-radius: 6px; padding: 0.95rem 1.1rem 1rem;
+    min-height: 212px; height: 100%; display: flex; flex-direction: column; gap: 0.25rem;
+    transition: border-color .15s ease, box-shadow .15s ease, transform .15s ease;
+}
+.nav-titulo {
+    font-stretch: 70%; font-variation-settings: "wdth" 70; font-weight: 800; font-size: 1.65rem; line-height: 1.05;
+    color: var(--tinta);
+}
+.nav-card p { color: var(--tinta-2); font-size: 0.93rem; line-height: 1.4; margin: 0.15rem 0 0.4rem; flex: 1; }
+.nav-nota {
+    align-self: flex-start; font-size: 0.78rem; font-weight: 600; color: var(--tinta);
+    background: var(--plomo-suave); border-radius: 999px; padding: 2px 9px;
+}
+.st-key-nav_informe .nav-titulo { font-size: 2.1rem; }
+[class*="st-key-nav_"]:hover .nav-card {
+    border-color: var(--azul); transform: translateY(-2px); box-shadow: 0 14px 28px -18px rgba(15,42,61,0.55);
+}
+[class*="st-key-nav_"]:has(button:focus-visible) .nav-card { outline: 3px solid var(--azul); outline-offset: 2px; }
+.nav-card.activa { background: var(--tinta); border-color: var(--tinta); }
+.nav-card.activa .nav-titulo { color: #FFFFFF; }
+.nav-card.activa p { color: #C9D9E5; }
+.nav-card.activa .nav-paso { color: #9FD1FF; }
+.nav-card.activa .nav-nota { background: rgba(255,255,255,0.14); color: #FFFFFF; }
+@media (prefers-reduced-motion: reduce) { .nav-card { transition: none; } [class*="st-key-nav_"]:hover .nav-card { transform: none; } }
+
+/* ── Encabezado de la sección abierta ─────────────────────────────────── */
+.sec-cab { margin: 2.4rem 0 0.4rem; padding-top: 1.1rem; border-top: 2px solid var(--tinta); }
+.sec-cab .nav-paso .nav-nota { margin-left: 0.5rem; font-weight: 600; }
+
+/* ── Informe del proceso ──────────────────────────────────────────────── */
+.st-key-informe { max-width: 920px; }
+.st-key-informe p, .st-key-informe li { font-size: 1.04rem; line-height: 1.68; }
+.st-key-informe h3 {
+    font-stretch: 75%; font-variation-settings: "wdth" 75; font-weight: 800; font-size: 1.7rem;
+    margin: 1.8rem 0 0.4rem; padding: 0; border-bottom: 1px solid var(--plomo); padding-bottom: 0.3rem;
+}
+.st-key-informe h4 { font-weight: 750; font-size: 1.15rem; margin-top: 1.2rem; }
+.st-key-informe table { font-size: 0.95rem; background: #FFFFFF; }
+.st-key-informe [data-testid="stImageCaption"], .st-key-informe [data-testid="caption"] {
+    color: var(--tinta-2) !important; font-size: 0.9rem !important; text-align: left;
+}
 </style>
 """
 
