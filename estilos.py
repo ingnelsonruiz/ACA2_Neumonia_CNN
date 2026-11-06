@@ -34,6 +34,39 @@ h1, h2, h3, h4 { font-family: 'Archivo', sans-serif !important; color: var(--tin
 .stApp [data-testid="stExpander"] summary p {
     font-family: 'Archivo', system-ui, sans-serif !important;
 }
+/* Color de texto fijado aquí y no en el tema: la app se lee bien aunque config.toml siga en «dark» */
+.main h1, .main h2, .main h3, .main h4, .main h5, .main h6,
+[data-testid="stMain"] h1, [data-testid="stMain"] h2, [data-testid="stMain"] h3,
+[data-testid="stMain"] h4, [data-testid="stMain"] h5, [data-testid="stMain"] h6 { color: var(--tinta) !important; }
+[data-testid="stMain"] [data-testid="stMarkdownContainer"],
+[data-testid="stMain"] [data-testid="stMarkdownContainer"] p,
+[data-testid="stMain"] [data-testid="stMarkdownContainer"] li,
+[data-testid="stMain"] [data-testid="stMarkdownContainer"] td,
+[data-testid="stMain"] [data-testid="stMarkdownContainer"] th,
+[data-testid="stMain"] [data-testid="stWidgetLabel"] p,
+[data-testid="stMain"] [data-testid="stCaptionContainer"],
+[data-testid="stMain"] label { color: var(--tinta) !important; }
+[data-testid="stMain"] [data-testid="stMarkdownContainer"] table { background: #FFFFFF; border-collapse: collapse; }
+[data-testid="stMain"] [data-testid="stMarkdownContainer"] th { background: var(--plomo-suave); font-weight: 700; }
+[data-testid="stMain"] [data-testid="stMarkdownContainer"] td,
+[data-testid="stMain"] [data-testid="stMarkdownContainer"] th { border: 1px solid var(--plomo) !important; padding: 6px 12px; }
+/* Las clases propias conservan sus colores (más específicas que las reglas anteriores) */
+[data-testid="stMain"] .nav-card.activa .nav-titulo { color: #FFFFFF !important; }
+[data-testid="stMain"] .nav-card.activa p { color: #C9D9E5 !important; }
+[data-testid="stMain"] .veredicto-m, [data-testid="stMain"] .veredicto-b { color: #FFFFFF !important; }
+[data-testid="stMain"] .hero .bajada, [data-testid="stMain"] .lectura .l, [data-testid="stMain"] .hero .nota,
+[data-testid="stMain"] .pie-pelicula, [data-testid="stMain"] .nav-card p, [data-testid="stMain"] .card p,
+[data-testid="stMain"] .demo-cab p, [data-testid="stMain"] .nav-cab p, [data-testid="stMain"] .sec-cab p,
+[data-testid="stMain"] .kpi-l, [data-testid="stMain"] .member .rol { color: var(--tinta-2) !important; }
+[data-testid="stMain"] .lectura .rojo .v, [data-testid="stMain"] .demo-paso { color: var(--rojo) !important; }
+[data-testid="stMain"] .nav-paso, [data-testid="stMain"] .story .q, [data-testid="stMain"] .step b,
+[data-testid="stMain"] .ayuda-kpi b { color: var(--azul) !important; }
+[data-testid="stMain"] .nav-card.activa .nav-paso { color: #9FD1FF !important; }
+[data-testid="stMain"] .nav-card.activa .nav-nota { color: #FFFFFF !important; }
+[data-testid="stMain"] .anot, [data-testid="stMain"] .anot * { color: #D6E8F7 !important; }
+[data-testid="stMain"] .anot b { color: #FFFFFF !important; }
+[data-testid="stMain"] .anot .alerta { color: #FF8A80 !important; }
+
 /* Ancho condensado: font-stretch + eje variable explícito (algunos navegadores solo respetan uno) */
 .hero h1, .card .n { font-variation-settings: "wdth" 62; }
 .veredicto-m, .veredicto-b { font-variation-settings: "wdth" 65; }
