@@ -1,12 +1,11 @@
-"""Pestaña «Pipeline»: preprocesamiento y laboratorio interactivo de aumento de datos."""
+"""Página «Pipeline»: preprocesamiento y laboratorio interactivo de aumento de datos."""
 
 import pandas as pd
 import streamlit as st
 from PIL import Image, ImageEnhance, ImageOps
 
-from config import CYAN, GREEN, PINK
 from modelo import cargar_imagen_gris, clase_predicha, predecir
-from ui import imagen, kpi, panel, seccion, tabla
+from ui import flujo, imagen, kpi, panel, seccion, tabla
 
 
 JUSTIFICACION = ["Variaciones de encuadre y distancia del equipo",
@@ -32,9 +31,7 @@ def _aumentar(img, rotacion, zoom, dx, dy, brillo, contraste, voltear):
 def render(ctx):
     p = ctx.meta["preprocesamiento"]
     seccion("PREPROCESAMIENTO (IDÉNTICO EN ENTRENAMIENTO Y EN ESTA APP)")
-    pasos = '<span class="flecha">➜</span>'.join(
-        f'<div class="step"><b>Paso {i}</b><span>{t}</span></div>' for i, t in enumerate(p["pasos"], 1))
-    st.markdown(f'<div class="flow">{pasos}</div>', unsafe_allow_html=True)
+    flujo([(f"Paso {i}", t) for i, t in enumerate(p["pasos"], 1)], ancho=180)
     panel("Las radiografías originales miden entre ~400 y ~2 900 píxeles de ancho. El notebook las guarda en "
           "memoria a 256×256 en escala de grises (decodificación JPEG reducida con <code>draft</code>) y la red "
           "recibe 224×224×3, porque EfficientNet fue preentrenada en ImageNet con imágenes a color normalizadas "
@@ -65,13 +62,15 @@ def render(ctx):
     a, b = st.columns(2)
     with a:
         imagen(original, "Original")
-        st.markdown(kpi(f"{r0.prob_neumonia*100:.1f}%", f"P(neumonía) · {clase_predicha(r0.prob_neumonia, ctx.umbral)}",
-                        CYAN), unsafe_allow_html=True)
+        kpi(st, f"{r0.prob_neumonia*100:.1f} %",
+            f"P(neumonía), clase {clase_predicha(r0.prob_neumonia, ctx.umbral)}")
     with b:
         imagen(aumentada, "Aumentada")
         delta = (r1.prob_neumonia - r0.prob_neumonia) * 100
-        color = GREEN if abs(delta) < 10 else PINK
-        st.markdown(kpi(f"{r1.prob_neumonia*100:.1f}%", f"P(neumonía) · {clase_predicha(r1.prob_neumonia, ctx.umbral)} "
-                        f"· Δ {delta:+.1f} pp", color), unsafe_allow_html=True)
+        # Un cambio grande es una alerta en cualquier dirección: rojo si supera 10 puntos
+        st.metric(f"P(neumonía), clase {clase_predicha(r1.prob_neumonia, ctx.umbral)}",
+                  f"{r1.prob_neumonia*100:.1f} %".replace(".", ","), delta=f"{delta:+.1f} pp".replace(".", ","),
+                  delta_color="gray" if abs(delta) < 10 else "red", border=True,
+                  delta_description="frente a la original")
     st.caption("Un modelo robusto mantiene la predicción estable dentro de los rangos usados en el entrenamiento; "
                "fuera de ellos (por ejemplo, rotaciones de 30°) es esperable que cambie.")

@@ -1,4 +1,4 @@
-"""Pestaña «El dataset»: origen, distribución, duplicados y partición por paciente."""
+"""Página «El dataset»: origen, distribución, duplicados y partición por paciente."""
 
 import pandas as pd
 import plotly.graph_objects as go
@@ -19,15 +19,15 @@ def render(ctx):
           f"<small>{CITA_DATASET}<br>{CITA_KAGGLE}</small>")
 
     c = st.columns(4)
-    c[0].markdown(kpi(f"{d['archivos_totales']:,}", "Archivos descargados", CYAN), unsafe_allow_html=True)
-    c[1].markdown(kpi(f"{d['duplicados']:,}", "Duplicados exactos", PINK,
-                      "Archivos con el mismo hash MD5, eliminados antes de partir."), unsafe_allow_html=True)
-    c[2].markdown(kpi(f"{d['imagenes_unicas']:,}", "Imágenes únicas", GREEN), unsafe_allow_html=True)
+    kpi(c[0], f"{d['archivos_totales']:,}", "Archivos descargados", CYAN)
+    kpi(c[1], f"{d['duplicados']:,}", "Duplicados exactos", PINK,
+                      "Archivos con el mismo hash MD5, eliminados antes de partir.")
+    kpi(c[2], f"{d['imagenes_unicas']:,}", "Imágenes únicas", GREEN)
     # Total por partición: cada paciente está en una sola (sin fuga), y un mismo paciente puede
     # tener imágenes bacterianas y virales, así que sumar por subtipo lo contaría dos veces.
     pac = sum(r["pacientes"] for r in d["particiones"])
-    c[3].markdown(kpi(f"{pac:,}", "Pacientes", VIOLET,
-                      "Identificados a partir del nombre de archivo (personN / IM-NNNN)."), unsafe_allow_html=True)
+    kpi(c[3], f"{pac:,}", "Pacientes", VIOLET,
+                      "Identificados a partir del nombre de archivo (personN / IM-NNNN).")
 
     dist = pd.DataFrame(d["distribucion"])
     izq, der = st.columns(2)

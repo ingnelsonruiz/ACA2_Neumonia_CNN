@@ -1,4 +1,4 @@
-"""Pestaña «Informe del proceso»: recorrido académico completo del proyecto.
+"""Página «Informe del proceso»: recorrido académico completo del proyecto.
 
 Responde al requisito del ACA de explicar el proceso de punta a punta: problema, datos y SQL,
 preparación, arquitectura, entrenamiento, evaluación, despliegue, limitaciones y referencias.
@@ -136,7 +136,7 @@ Se usó el conjunto *Chest X-Ray Images (Pneumonia)* (Kermany et al., 2018): rad
 niños de 1 a 5 años del Guangzhou Women and Children's Medical Center. Cada archivo se leyó una sola vez para
 calcular su hash MD5, registrar sus dimensiones y guardar una copia de 256×256 píxeles en memoria. El
 inventario se insertó en una base **DuckDB** y el análisis exploratorio se resolvió con consultas SQL
-(pestaña *Consultas SQL*). Tres hallazgos orientaron el diseño:
+(página *Consultas SQL*). Tres hallazgos orientaron el diseño:
 
 - **Duplicados:** de {miles(d['archivos_totales'])} archivos descargados solo {miles(d['imagenes_unicas'])} eran únicos. Sin
   deduplicar, una misma imagen podía quedar en entrenamiento y en prueba.

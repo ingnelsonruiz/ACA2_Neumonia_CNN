@@ -1,4 +1,4 @@
-"""Pestaña «Entrenamiento»: curvas de aprendizaje por época."""
+"""Página «Entrenamiento»: curvas de aprendizaje por época."""
 
 import pandas as pd
 import plotly.graph_objects as go
@@ -20,7 +20,7 @@ def render(ctx):
     h = pd.DataFrame(ctx.meta["historia"])
     fin_fase1 = ctx.meta["entrenamiento"]["epoca_fin_fase1"]
     seccion("CURVAS DE APRENDIZAJE")
-    metrica = st.radio("Métrica", list(METRICAS), horizontal=True)
+    metrica = st.segmented_control("Métrica", list(METRICAS), default="Pérdida", required=True)
     col_ent, col_val = METRICAS[metrica]
 
     fig = go.Figure()
@@ -47,5 +47,5 @@ def render(ctx):
           "punteada muestra el beneficio de descongelar la red en la fase 2.")
     expansor_indicadores(["Pérdida (loss)", "F1", "ROC-AUC"])
 
-    with st.expander("Tabla completa por época"):
+    with st.expander("Tabla completa por época", icon=":material/table_chart:"):
         tabla(h.round(4))

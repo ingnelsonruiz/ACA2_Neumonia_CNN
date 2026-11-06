@@ -1,4 +1,4 @@
-"""Pestaña «Consultas SQL»: exploración de la base DuckDB construida en el notebook (solo lectura)."""
+"""Página «Consultas SQL»: exploración de la base DuckDB construida en el notebook (solo lectura)."""
 
 import re
 
@@ -84,7 +84,7 @@ def render(ctx):
     seccion("BASE DE DATOS DUCKDB")
     if not ctx.hay_db:
         panel("No se encontró <code>chest_xray.duckdb</code> en la raíz del repositorio. Viene incluido en "
-              "<code>artefactos_aca2.zip</code>; cópielo junto a <code>app.py</code> para habilitar esta pestaña.")
+              "<code>artefactos_aca2.zip</code>; cópielo junto a <code>app.py</code> para habilitar esta página.")
         return
     panel("El notebook guarda el inventario de imágenes en una base analítica <b>DuckDB</b> (un solo archivo, "
           "sin servidor). Tablas: <code>imagenes</code> (todos los archivos), <code>imagenes_unicas</code> "
@@ -101,7 +101,7 @@ def render(ctx):
 
     nombre = st.selectbox("Consulta predefinida", list(CONSULTAS))
     sql = st.text_area("SQL (puede editarla)", CONSULTAS[nombre].strip(), height=180, key=f"sql_{nombre}")
-    if st.button("▶ Ejecutar consulta", type="primary"):
+    if st.button("Ejecutar consulta", type="primary", icon=":material/play_arrow:"):
         ok, resultado = _es_segura(sql)
         if not ok:
             st.error(resultado)

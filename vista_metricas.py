@@ -1,4 +1,4 @@
-"""Pestaña «Métricas»: evaluación en el conjunto de prueba."""
+"""Página «Métricas»: evaluación en el conjunto de prueba."""
 
 import numpy as np
 import pandas as pd
@@ -16,7 +16,7 @@ COLUMNAS = {"accuracy": "Exactitud", "precision": "Precisión", "recall_sensibil
 
 def render(ctx):
     r = ctx.principal
-    seccion(f"EFFICIENTNET-B0 · CONJUNTO DE PRUEBA · UMBRAL {ctx.meta['umbral']:.2f}")
+    seccion(f"EFFICIENTNET-B0 · CONJUNTO DE PRUEBA · UMBRAL {ctx.meta['umbral']:.2f}".replace(".", ","))
     c = st.columns(6)
     for col, (v, nombre, color, clave) in zip(c, [
         (r["accuracy"], "Exactitud", CYAN, "Exactitud (accuracy)"),
@@ -26,7 +26,7 @@ def render(ctx):
         (r["f1_macro"], "F1 macro", AMBER, "F1"),
         (r["roc_auc"], "ROC-AUC", CYAN, "ROC-AUC"),
     ]):
-        col.markdown(kpi(f"{v:.3f}", nombre, color, ayuda(clave)), unsafe_allow_html=True)
+        kpi(col, f"{v:.3f}", nombre, color, ayuda(clave))
     expansor_indicadores(["Exactitud (accuracy)", "Sensibilidad (recall)", "Especificidad",
                           "Precisión (VPP)", "F1", "ROC-AUC", "VP, FP, VN, FN"])
 

@@ -1,4 +1,4 @@
-"""Pestaña «Umbral clínico»: efecto del punto de corte (curvas calculadas en validación)."""
+"""Página «Umbral clínico»: efecto del punto de corte (curvas calculadas en validación)."""
 
 import pandas as pd
 import plotly.graph_objects as go
@@ -14,18 +14,18 @@ def render(ctx):
     panel("En tamizaje, un <b>falso negativo</b> (neumonía no detectada) es el error más grave. Bajar el umbral "
           "aumenta la sensibilidad a costa de más falsas alarmas. Las curvas se calcularon en el conjunto de "
           "<b>validación</b>, que es donde se elige el umbral; el conjunto de prueba se reserva para la evaluación "
-          "final. Mueva el control <b>Umbral de decisión</b> de la barra lateral: también cambia la pestaña "
-          "Predicción.")
+          "final. Mueva el control <b>Umbral de decisión</b> de la barra lateral: también cambia la predicción "
+          "de la página Inicio.")
 
     b = pd.DataFrame(ctx.meta["barrido_umbral"])
     fila = b.iloc[(b["umbral"] - ctx.umbral).abs().idxmin()]
     c = st.columns(4)
-    c[0].markdown(kpi(f"{ctx.umbral:.2f}", "Umbral activo", AMBER, ayuda("Umbral de decisión")), unsafe_allow_html=True)
-    c[1].markdown(kpi(f"{fila['recall_neumonia']*100:.1f}%", "Sensibilidad (val.)", PINK,
-                      ayuda("Sensibilidad (recall)")), unsafe_allow_html=True)
-    c[2].markdown(kpi(f"{fila['especificidad']*100:.1f}%", "Especificidad (val.)", GREEN,
-                      ayuda("Especificidad")), unsafe_allow_html=True)
-    c[3].markdown(kpi(f"{fila['f1_macro']:.3f}", "F1 macro (val.)", CYAN, ayuda("F1")), unsafe_allow_html=True)
+    kpi(c[0], f"{ctx.umbral:.2f}", "Umbral activo", AMBER, ayuda("Umbral de decisión"))
+    kpi(c[1], f"{fila['recall_neumonia']*100:.1f}%", "Sensibilidad (val.)", PINK,
+                      ayuda("Sensibilidad (recall)"))
+    kpi(c[2], f"{fila['especificidad']*100:.1f}%", "Especificidad (val.)", GREEN,
+                      ayuda("Especificidad"))
+    kpi(c[3], f"{fila['f1_macro']:.3f}", "F1 macro (val.)", CYAN, ayuda("F1"))
 
     fig = go.Figure()
     for col, nombre, color in [("recall_neumonia", "Sensibilidad", PINK), ("especificidad", "Especificidad", GREEN),

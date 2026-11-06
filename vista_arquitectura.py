@@ -1,10 +1,10 @@
-"""Pestaña «Arquitectura»: CNN base vs. EfficientNet-B0, transfer learning y CAM."""
+"""Página «Arquitectura»: CNN base vs. EfficientNet-B0, transfer learning y CAM."""
 
 import pandas as pd
 import streamlit as st
 
 from config import AMBER, CYAN, DIR_ARTEFACTOS, GREEN, PINK, VIOLET
-from ui import kpi, oracion, panel, seccion, tabla, tarjeta
+from ui import flujo, kpi, panel, seccion, tabla, tarjeta
 
 CAPAS_EFFNET = [
     ("ENTRADA", "224×224×3"), ("STEM", "Conv 3×3 · 32"), ("MBConv1", "16 canales"),
@@ -20,9 +20,7 @@ CAPAS_BASE = [
 
 
 def _flujo(capas):
-    html = '<span class="flecha">➜</span>'.join(f'<div class="step"><b>{oracion(t)}</b><span>{d}</span></div>'
-                                                 for t, d in capas)
-    st.markdown(f'<div class="flow">{html}</div>', unsafe_allow_html=True)
+    flujo(capas, ancho=140)
 
 
 def render(ctx):
@@ -38,13 +36,12 @@ def render(ctx):
     seccion("ENTRENAMIENTO EN DOS FASES")
     t = ctx.meta["entrenamiento"]
     a, c = st.columns(2)
-    a.markdown(tarjeta("FASE 1 · CABEZA", f"Extractor congelado (incluidas sus capas BatchNorm). Solo se entrena la "
+    tarjeta(a, "FASE 1 · CABEZA", f"Extractor congelado (incluidas sus capas BatchNorm). Solo se entrena la "
                        f"capa final con lr = {t['lr']['fase1']:g} durante {t['epoca_fin_fase1']} épocas. Evita que "
-                       "los gradientes de una capa aleatoria destruyan los filtros preentrenados.", CYAN, "1"),
-               unsafe_allow_html=True)
-    c.markdown(tarjeta("FASE 2 · FINE-TUNING", f"Se descongela toda la red y se ajusta con lr = {t['lr']['fase2']:g} "
+                       "los gradientes de una capa aleatoria destruyan los filtros preentrenados.", CYAN, "1")
+    tarjeta(c, "FASE 2 · FINE-TUNING", f"Se descongela toda la red y se ajusta con lr = {t['lr']['fase2']:g} "
                        "(10 veces menor) y decaimiento coseno, con early stopping sobre el F1 macro de validación.",
-                       VIOLET, "2"), unsafe_allow_html=True)
+                       VIOLET, "2")
     st.caption(f"Pérdida: {t['perdida']} · Optimizador: {t['optimizador']} · Scheduler: {t['scheduler']} · "
                f"Batch: {t['batch']} · Semilla: {t['semilla']}")
 
@@ -64,12 +61,11 @@ def render(ctx):
         comp[col] = comp[col].map(lambda v: f"{v:.4f}")
     tabla(comp)
     k = st.columns(3)
-    k[0].markdown(kpi(f"{(e['f1_macro'] - b['f1_macro'])*100:+.1f} pp", "Ganancia en F1 macro", GREEN),
-                  unsafe_allow_html=True)
-    k[1].markdown(kpi(f"{(e['roc_auc'] - b['roc_auc']):+.3f}", "Ganancia en AUC", AMBER), unsafe_allow_html=True)
+    kpi(k[0], f"{(e['f1_macro'] - b['f1_macro'])*100:+.1f} pp", "Ganancia en F1 macro", GREEN)
+    kpi(k[1], f"{(e['roc_auc'] - b['roc_auc']):+.3f}", "Ganancia en AUC", AMBER)
     mb = (DIR_ARTEFACTOS / m["archivo"]).stat().st_size / 1e6
-    k[2].markdown(kpi(f"{mb:.1f} MB", "Tamaño del modelo ONNX", PINK,
-                      "Formato abierto servido con onnxruntime en CPU, sin PyTorch."), unsafe_allow_html=True)
+    kpi(k[2], f"{mb:.1f} MB", "Tamaño del modelo ONNX", PINK,
+                      "Formato abierto servido con onnxruntime en CPU, sin PyTorch.")
 
     seccion("EXPLICABILIDAD · MAPAS DE ACTIVACIÓN DE CLASE (CAM)")
     st.latex(r"\mathrm{CAM}_{c}(i,j)=\max\Big(0,\;\sum_{k=1}^{1280} w_{c,k}\,A_k(i,j)\Big)")

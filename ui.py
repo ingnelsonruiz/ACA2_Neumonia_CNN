@@ -1,32 +1,32 @@
-"""Componentes reutilizables de interfaz (heredados del ACA 1).
+"""Componentes reutilizables de interfaz, construidos con elementos nativos de Streamlit.
 
-Todas las vistas usan estas funciones, así que un cambio aquí se refleja
-en toda la aplicación sin tocar cada vista.
+Todas las vistas usan estas funciones, así que un cambio aquí se refleja en toda la aplicación.
+Los colores y la tipografía vienen del tema (.streamlit/config.toml), no de CSS.
 """
+
+import re
 
 import streamlit as st
 
-from config import CYAN  # noqa: F401
 
-
-# ── Envoltorios tolerantes a cambios de API de Streamlit ─────────────────────
-def mostrar(fig):
+# ── Figuras, tablas e imágenes ───────────────────────────────────────────────
+def mostrar(fig, alt: str | None = None):
     """Dibuja una figura de Plotly ocupando todo el ancho disponible."""
-    try:
-        st.plotly_chart(fig, width="stretch")
-    except TypeError:                       # versiones anteriores de Streamlit
-        st.plotly_chart(fig, use_container_width=True)
+    titulo = fig.layout.title.text if fig.layout.title and fig.layout.title.text else None
+    st.plotly_chart(fig, width="stretch", alt=alt or titulo or "Gráfico interactivo",
+                    config={"displaylogo": False})
 
 
-def tabla(df, ocultar_indice=True):
+def tabla(df, ocultar_indice=True, alt: str | None = None):
     """Dibuja un DataFrame ocupando todo el ancho disponible."""
-    try:
-        st.dataframe(df, width="stretch", hide_index=ocultar_indice)
-    except TypeError:
-        st.dataframe(df, use_container_width=True, hide_index=ocultar_indice)
+    st.dataframe(df, width="stretch", hide_index=ocultar_indice, alt=alt or "Tabla de datos")
 
 
-# ── Estilo común de las figuras ──────────────────────────────────────────────
+def imagen(img, pie=None, alt: str | None = None):
+    """Muestra una imagen ocupando el ancho de su columna."""
+    st.image(img, caption=pie, width="stretch", alt=alt or pie or "Radiografía de tórax")
+
+
 def estilo(fig, alto=420, titulo=None):
     """Aplica el tema «negatoscopio» (claro, tinta azul película) a una figura de Plotly."""
     fig.update_layout(
@@ -46,7 +46,7 @@ def estilo(fig, alto=420, titulo=None):
     return fig
 
 
-# ── Texto en tipo oración ────────────────────────────────────────────────────
+# ── Texto ────────────────────────────────────────────────────────────────────
 # Las vistas escriben algunos títulos en mayúsculas; aquí se convierten a tipo oración
 # conservando siglas y nombres propios.
 _PROPIOS = {
@@ -69,52 +69,87 @@ def oracion(texto):
     return salida[:1].upper() + salida[1:]
 
 
+_HTML_A_MD = [
+    (r"<br\s*/?>\s*<br\s*/?>", "\n\n"), (r"<br\s*/?>", "  \n"),
+    (r"</?b>", "**"), (r"</?i>", "*"), (r"</?code>", "`"),
+    (r"(\w)<sub>([\w,]+)</sub>", r"$\1_{\2}$"),
+]
+
+
+def md(texto: str) -> str:
+    """Convierte el HTML básico de los textos (<b>, <i>, <code>, <br>, <sub>) a Markdown."""
+    texto = texto.replace("~", r"\~")          # evita que «~400 … ~2 900» se lea como tachado
+    for patron, reemplazo in _HTML_A_MD:
+        texto = re.sub(patron, reemplazo, texto)
+    return texto
+
+
+def _con_notas(texto: str):
+    """Separa el texto principal de las notas en <small> (citas), que se muestran como pie."""
+    notas = re.findall(r"<small>(.*?)</small>", texto, flags=re.S)
+    return re.sub(r"<small>.*?</small>", "", texto, flags=re.S).strip(), notas
+
+
 # ── Bloques de contenido ─────────────────────────────────────────────────────
-def kpi(valor, etiqueta, color, ayuda=None):
-    """Devuelve el HTML de una tarjeta de indicador. Usar con unsafe_allow_html=True.
-
-    `ayuda` aparece como texto emergente al pasar el cursor sobre la tarjeta.
-    """
-    titulo = f' title="{ayuda}"' if ayuda else ""
-    return (f'<div class="kpi" style="--c:{color}"{titulo}>'
-            f'<div class="kpi-v">{valor}</div>'
-            f'<div class="kpi-l">{etiqueta}</div></div>')
-
-
-def tarjeta(titulo, texto, color, numero=None):
-    """Devuelve el HTML de una tarjeta con título, texto y número opcional."""
-    n = f'<div class="n">{numero}</div>' if numero is not None else ""
-    return f'<div class="card" style="--c:{color}">{n}<h4>{oracion(titulo)}</h4><p>{texto}</p></div>'
-
-
-def miembro(nombre, color, rol):
-    """Devuelve el HTML de una ficha de integrante del equipo."""
-    iniciales = "".join(p[0] for p in nombre.split()[:2]).upper()
-    return (f'<div class="member" style="--c:{color}">'
-            f'<div class="avatar">{iniciales}</div>'
-            f'<div><div class="nom">{nombre}</div>'
-            f'<div class="rol">{rol}</div></div></div>')
-
-
 def seccion(texto):
-    """Escribe un encabezado de sección."""
-    st.markdown(f'<div class="sec">{oracion(texto)}</div>', unsafe_allow_html=True)
+    """Encabezado de sección."""
+    st.subheader(oracion(texto))
 
 
 def panel(texto):
-    """Escribe un bloque de texto explicativo."""
-    st.markdown(f'<div class="panel">{texto}</div>', unsafe_allow_html=True)
+    """Bloque de texto explicativo enmarcado."""
+    cuerpo, notas = _con_notas(texto)
+    with st.container(border=True):
+        st.markdown(md(cuerpo))
+        for n in notas:
+            st.caption(md(n))
 
 
-def historia(texto, color=CYAN, pregunta=None):
-    """Escribe un bloque narrativo con barra lateral de color."""
-    q = f'<span class="q">{pregunta}</span>' if pregunta else ""
-    st.markdown(f'<div class="story" style="--c:{color}">{texto}{q}</div>', unsafe_allow_html=True)
+def historia(texto, color=None, pregunta=None):
+    """Bloque narrativo con la pregunta orientadora destacada."""
+    with st.container(border=True):
+        st.markdown(md(texto))
+        if pregunta:
+            st.info(pregunta, icon=":material/help:", title="Pregunta orientadora")
 
 
-def imagen(img, pie=None):
-    """Muestra una imagen ocupando el ancho de su columna."""
-    try:
-        st.image(img, caption=pie, width="stretch")
-    except TypeError:
-        st.image(img, caption=pie, use_container_width=True)
+def es(texto: str) -> str:
+    """Formato numérico en español: «11,712» → «11.712» y «0.974» → «0,974»."""
+    return re.sub(r"\d[\d,.]*\d", lambda m: m.group().translate(str.maketrans(",.", ".,")), str(texto))
+
+
+def kpi(contenedor, valor, etiqueta, color=None, ayuda=None):
+    """Indicador con borde. `ayuda` se muestra en el icono de información junto a la etiqueta."""
+    contenedor.metric(etiqueta, es(valor), help=ayuda, border=True)
+
+
+def tarjeta(contenedor, titulo, texto, color=None, numero=None):
+    """Tarjeta con título y texto; todas las de una fila comparten altura.
+
+    `color` y `numero` se aceptan por compatibilidad con las vistas; el título ya lleva el número.
+    """
+    with contenedor.container(border=True, height="stretch"):
+        st.markdown(f"**{oracion(titulo)}**")
+        st.markdown(md(texto))
+
+
+def miembro(contenedor, nombre, color=None, rol=""):
+    """Ficha de integrante del equipo."""
+    with contenedor.container(border=True):
+        st.markdown(f":material/person: **{nombre}**")
+        st.caption(rol)
+
+
+def flujo(pasos, ancho=170):
+    """Secuencia real de pasos (preprocesamiento, capas, metodología): una fila que se ajusta al ancho.
+
+    `pasos` es una lista de tuplas (título, descripción) o (título, descripción, nota).
+    """
+    with st.container(horizontal=True, gap="small"):
+        for paso in pasos:
+            titulo, texto, *nota = paso
+            with st.container(border=True, width=ancho, height="stretch"):
+                st.markdown(f"**{oracion(titulo)}**")
+                st.markdown(md(texto))
+                if nota:
+                    st.caption(nota[0])

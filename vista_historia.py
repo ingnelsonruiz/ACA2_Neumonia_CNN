@@ -1,9 +1,9 @@
-"""Pestaña «La historia»: problema, pregunta orientadora y flujo metodológico."""
+"""Página «La historia»: problema, pregunta orientadora y flujo metodológico."""
 
 import streamlit as st
 
 from config import AMBER, CYAN, GREEN, PINK, VIOLET
-from ui import historia, seccion, tarjeta
+from ui import flujo, historia, seccion, tarjeta
 
 PASOS = [
     ("1. Datos y SQL", "Inventario en DuckDB, EDA y deduplicación por hash", "20 % de la rúbrica"),
@@ -27,20 +27,17 @@ def render(ctx):
                  "con neumonía, priorizando no dejar pasar casos positivos y mostrando en qué se basa?")
 
     seccion("CÓMO LO ABORDAMOS")
-    pasos = '<span class="flecha">➜</span>'.join(
-        f'<div class="step"><b>{t}</b><span>{d}</span><small>{r}</small></div>' for t, d, r in PASOS)
-    st.markdown(f'<div class="flow">{pasos}</div>', unsafe_allow_html=True)
+    flujo(PASOS, ancho=180)
 
     seccion("DECISIONES QUE MARCAN LA DIFERENCIA")
     d = ctx.meta["dataset"]
     a, b, c, e = st.columns(4)
-    a.markdown(tarjeta("SIN DUPLICADOS", f"El dataset original trae {d['duplicados']:,} archivos repetidos. "
+    tarjeta(a, "SIN DUPLICADOS", f"El dataset original trae {d['duplicados']:,} archivos repetidos. "
                        "Se eliminaron por hash para que ninguna imagen esté a la vez en entrenamiento y prueba.",
-                       PINK), unsafe_allow_html=True)
-    b.markdown(tarjeta("POR PACIENTE", "Un mismo niño puede tener varias radiografías. La partición se hizo por "
-                       "paciente: las métricas reflejan pacientes nuevos, no imágenes memorizadas.", VIOLET),
-               unsafe_allow_html=True)
-    c.markdown(tarjeta("SENSIBILIDAD PRIMERO", "Pesos de clase en la pérdida y umbral ajustado en validación: "
-                       "un falso negativo es el error más costoso.", GREEN), unsafe_allow_html=True)
-    e.markdown(tarjeta("EXPLICABLE", "Cada predicción trae un mapa de activación (CAM) que muestra qué zonas "
-                       "pulmonares motivaron la decisión.", AMBER), unsafe_allow_html=True)
+                       PINK)
+    tarjeta(b, "POR PACIENTE", "Un mismo niño puede tener varias radiografías. La partición se hizo por "
+                       "paciente: las métricas reflejan pacientes nuevos, no imágenes memorizadas.", VIOLET)
+    tarjeta(c, "SENSIBILIDAD PRIMERO", "Pesos de clase en la pérdida y umbral ajustado en validación: "
+                       "un falso negativo es el error más costoso.", GREEN)
+    tarjeta(e, "EXPLICABLE", "Cada predicción trae un mapa de activación (CAM) que muestra qué zonas "
+                       "pulmonares motivaron la decisión.", AMBER)

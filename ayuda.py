@@ -64,12 +64,10 @@ def ayuda(nombre: str) -> str:
 
 
 def expansor_indicadores(nombres: list[str], titulo: str = "¿Qué significa cada indicador?"):
-    with st.expander(titulo):
+    with st.expander(titulo, icon=":material/help:"):
         for n in nombres:
             definicion, lectura = GLOSARIO[n]
-            st.markdown(f'<div class="ayuda-kpi"><b>{n}.</b> {definicion} <i>{lectura}</i></div>',
-                        unsafe_allow_html=True)
-            st.write("")
+            st.markdown(f"**{n}.** {definicion}  \n*{lectura}*")
 
 
 def manual_markdown(meta: dict | None) -> str:
@@ -87,8 +85,10 @@ que indica en qué zonas de la imagen se apoyó la decisión. Es un prototipo ac
 dispositivo médico ni sustituye el criterio de un radiólogo.**
 
 ## 2. Organización de la aplicación
-Debajo de la portada está **Pruebe el modelo** (paso 5 del ACA): la herramienta de predicción. Más abajo,
-**Recorrido del proyecto** muestra una tarjeta por sección; al hacer clic se abre su contenido.
+La página **Inicio** muestra la portada con los resultados del modelo y, debajo, **Pruebe el modelo**
+(paso 5 del ACA): la herramienta de predicción. El menú lateral agrupa las demás páginas por paso del ACA
+(Proyecto, Datos, Modelo, Evaluación y Entregables); el bloque **Recorrido del proyecto** de Inicio
+tiene los mismos accesos. Cada página indica arriba su paso y el criterio de la rúbrica que evidencia.
 
 | Sección | Qué encuentra |
 |---|---|
@@ -104,7 +104,7 @@ Debajo de la portada está **Pruebe el modelo** (paso 5 del ACA): la herramienta
 | Documentación | Este manual y el glosario |
 
 ## 3. Cómo hacer una predicción
-1. Vaya al bloque **Pruebe el modelo**, justo debajo de la portada.
+1. En la página **Inicio**, vaya al bloque **Pruebe el modelo**, justo debajo de la portada.
 2. Elija una radiografía de ejemplo (del conjunto de prueba, nunca vista en entrenamiento) o suba
    un archivo JPG/PNG de una radiografía de tórax anteroposterior.
 3. Revise la probabilidad de neumonía, la decisión según el umbral activo (barra lateral; por
@@ -130,12 +130,17 @@ Requiere la carpeta `artefactos/` (y opcionalmente `chest_xray.duckdb`) generada
 ## 6. Estructura del código
 | Archivo | Responsabilidad |
 |---|---|
-| `app.py` | Orquestador: página, barra lateral y pestañas |
+| `app.py` | Punto de entrada: navegación (`st.navigation`), barra lateral y encabezados |
+| `paginas.py` | Registro de páginas: título, icono, paso del ACA y criterio de la rúbrica |
+| `app_pages/*.py` | Una página por archivo; cada una llama a su `vista_*.py` |
+| `portada.py` | Portada de Inicio y recorrido del proyecto |
 | `config.py` | Paleta, textos del curso, integrantes, rutas y enlaces |
 | `modelo.py` | Carga de artefactos, preprocesamiento, inferencia ONNX y CAM |
 | `ayuda.py` | Glosario y este manual |
-| `ui.py`, `estilos.py` | Componentes visuales y CSS (heredados del ACA 1) |
-| `vista_*.py` | Una pestaña por archivo, cada una con `render(ctx)` |
+| `ui.py` | Componentes nativos reutilizables (indicadores, tarjetas, flujos) |
+| `estilos.py` | CSS mínimo: portada, veredicto y lectura asistida |
+| `.streamlit/config.toml` | Tema: colores, tipografías y barra lateral |
+| `vista_*.py` | Contenido de cada página, con `render(ctx)` |
 
 ## 7. Referencias
 - {CITA_DATASET}

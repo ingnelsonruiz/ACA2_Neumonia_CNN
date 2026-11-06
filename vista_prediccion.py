@@ -1,4 +1,4 @@
-"""Pestaña «Predicción»: inferencia en tiempo real con mapa de activación."""
+"""Bloque «Pruebe el modelo» de Inicio: inferencia en tiempo real con mapa de activación."""
 
 import plotly.graph_objects as go
 import streamlit as st
@@ -25,25 +25,21 @@ def _medidor(prob, umbral):
 
 
 def render(ctx):
-    opciones = ["🩻  Usar un ejemplo de prueba", "⬆️  Subir mi radiografía"]
-    try:   # Streamlit ≥ 1.40: grupo de botones
-        eleccion = st.segmented_control("Origen de la imagen", opciones, default=opciones[0],
-                                        selection_mode="single", key="origen_imagen")
-    except AttributeError:
-        eleccion = st.radio("Origen de la imagen", opciones, horizontal=True, key="origen_imagen")
-    # Si el usuario vuelve a pulsar el botón activo, segmented_control devuelve None: se conserva el ejemplo
+    opciones = [":material/photo_library: Usar un ejemplo de prueba", ":material/upload: Subir mi radiografía"]
+    eleccion = st.segmented_control("Origen de la imagen", opciones, default=opciones[0], required=True,
+                                    key="origen_imagen")
     fuente = "Subir radiografía" if eleccion == opciones[1] else "Ejemplos del conjunto de prueba"
     if fuente == "Subir radiografía":
         archivo = st.file_uploader("Radiografía de tórax AP (JPG o PNG)", type=["jpg", "jpeg", "png"])
         if archivo is None:
-            st.info("Suba una imagen para analizarla, o use los ejemplos.")
+            st.info("Suba una imagen para analizarla, o use los ejemplos.", icon=":material/upload:")
             return
         original = Image.open(archivo); original.load()
         archivo.seek(0)
         origen, etiqueta_real, nombre, es_ejemplo = archivo, None, archivo.name, False
     else:
         if not ctx.ejemplos:
-            st.info("No hay ejemplos disponibles en artefactos/ejemplos.")
+            st.info("No hay ejemplos disponibles en artefactos/ejemplos.", icon=":material/info:")
             return
         nombres = [e.name for e in ctx.ejemplos]
         # Abre con un caso ilustrativo (activación dentro del pulmón) si existe
@@ -74,8 +70,10 @@ def render(ctx):
         st.markdown(f'<div class="{css}">{lec.resultado}</div>', unsafe_allow_html=True)
         st.caption(f"Umbral activo {ctx.umbral:.2f}, inferencia en {r.milisegundos:.0f} ms en CPU".replace(".", ","))
         if etiqueta_real:
-            acierto = etiqueta_real == clase
-            st.markdown(f"**Etiqueta real:** {etiqueta_real} {'✅' if acierto else '❌'}")
+            if etiqueta_real == clase:
+                st.badge(f"Etiqueta real: {etiqueta_real}, coincide", icon=":material/check_circle:", color="green")
+            else:
+                st.badge(f"Etiqueta real: {etiqueta_real}, no coincide", icon=":material/cancel:", color="red")
 
     _informe(lec, nombre)
 
@@ -110,9 +108,9 @@ def _informe(lec, nombre):
   <div class="lia-pie">Prototipo académico entrenado con radiografías pediátricas (1 a 5 años) de un único
   hospital. No es un dispositivo médico ni sustituye la lectura de un radiólogo.</div>
 </div>''', unsafe_allow_html=True)
-    st.download_button("Descargar esta lectura (.txt)", texto_plano(lec, nombre).encode("utf-8"),
+    st.download_button("Descargar esta lectura (.txt)", icon=":material/download:", data= texto_plano(lec, nombre).encode("utf-8"),
                        file_name=f"lectura_{nombre.rsplit('.', 1)[0]}.txt", mime="text/plain")
-    with st.expander("¿Cómo se genera esta lectura?"):
+    with st.expander("¿Cómo se genera esta lectura?", icon=":material/help:"):
         st.markdown(
             "- **Resultado y confianza** salen de la probabilidad del modelo frente al umbral elegido en validación. "
             "Si la probabilidad queda a menos de 5 puntos del umbral, el caso se declara indeterminado.\n"
