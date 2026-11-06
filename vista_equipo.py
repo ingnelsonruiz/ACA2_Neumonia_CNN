@@ -10,7 +10,7 @@ from ui import kpi, miembro, panel, seccion, tarjeta
 def render(ctx):
     seccion(PROYECTO.upper())
     panel(f"<b>{SUBTITULO}</b><br>{INSTITUCION} · {PROGRAMA}<br>"
-          f"Asignatura: {ASIGNATURA} · {' · '.join(CODIGOS).title()} · Docente: {DOCENTE}")
+          f"Asignatura: {ASIGNATURA}, {CODIGOS[0]}, {CODIGOS[1].lower()}, {CODIGOS[2]}<br>Docente: {DOCENTE}")
 
     seccion(f"{GRUPO.upper()} · INTEGRANTES")
     cols = st.columns(2)

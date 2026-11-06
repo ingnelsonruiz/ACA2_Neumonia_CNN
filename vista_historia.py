@@ -6,11 +6,11 @@ from config import AMBER, CYAN, GREEN, PINK, VIOLET
 from ui import historia, seccion, tarjeta
 
 PASOS = [
-    ("1 · DATOS + SQL", "Inventario en DuckDB, EDA y deduplicación por hash", "20 % rúbrica"),
-    ("2 · PIPELINE", "Partición por paciente, caché y aumento de datos", "20 % rúbrica"),
-    ("3 · MODELADO", "CNN base vs. EfficientNet-B0 con transfer learning", "20 % rúbrica"),
-    ("4 · EVALUACIÓN", "Curvas, F1, AUC, matriz de confusión, umbral y CAM", "15 % rúbrica"),
-    ("5 · DESPLIEGUE", "Modelo ONNX servido en esta app Streamlit", "15 % rúbrica"),
+    ("1. Datos y SQL", "Inventario en DuckDB, EDA y deduplicación por hash", "20 % de la rúbrica"),
+    ("2. Pipeline", "Partición por paciente, caché y aumento de datos", "20 % de la rúbrica"),
+    ("3. Modelado", "CNN base frente a EfficientNet-B0 con transfer learning", "20 % de la rúbrica"),
+    ("4. Evaluación", "Curvas, F1, AUC, matriz de confusión, umbral y CAM", "15 % de la rúbrica"),
+    ("5. Despliegue", "Modelo ONNX servido en esta aplicación Streamlit", "15 % de la rúbrica"),
 ]
 
 

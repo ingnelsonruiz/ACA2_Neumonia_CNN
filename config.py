@@ -5,20 +5,27 @@ Editar aquí cambia la identidad visual y los textos de toda la aplicación.
 
 from pathlib import Path
 
-# ── Paleta (misma identidad visual del ACA 1) ────────────────────────────────
-CYAN = "#00D4FF"
-VIOLET = "#7B2FFF"
-GREEN = "#00FF88"
-PINK = "#FF2D78"
-AMBER = "#FFD700"
-NARANJA = "#FF6B35"
+# ── Paleta «negatoscopio» ────────────────────────────────────────────────────
+# Caja de luz (fondo luminoso), azul de película radiográfica y el rojo de los
+# marcadores de plomo «R». Los nombres se conservan para no tocar las vistas.
+LUZ = "#EEF3F7"         # fondo: panel luminoso del negatoscopio
+TINTA = "#0F2A3D"       # texto principal: azul película oscuro
+TINTA_2 = "#4A6274"     # texto secundario
+PLOMO = "#C9D6DF"       # bordes y divisiones
 
-COLOR_MODELO = {"CNN base": VIOLET, "EffNet-B0": CYAN}
+CYAN = "#1F5F8B"        # azul película (color principal)
+VIOLET = "#6A7FA3"      # pizarra
+GREEN = "#1D8F7A"       # tejido sano · NORMAL
+PINK = "#D93636"        # marcador R · NEUMONÍA
+AMBER = "#C98A12"       # umbral
+NARANJA = "#E0702A"
+
+COLOR_MODELO = {"CNN base": "#8FA3B3", "EffNet-B0": CYAN}
 COLOR_CLASE = {"NORMAL": GREEN, "NEUMONIA": PINK}
 
 # ── Metadatos académicos ─────────────────────────────────────────────────────
 PROYECTO = "Proyecto ACA 2"
-TITULO_APP = "RADIOGRAFÍA INTELIGENTE"
+TITULO_APP = "Radiografía inteligente"
 SUBTITULO = ("Detección de neumonía en radiografías de tórax con redes neuronales "
              "convolucionales y despliegue interactivo en Streamlit")
 ASIGNATURA = "Aprendizaje Automático"

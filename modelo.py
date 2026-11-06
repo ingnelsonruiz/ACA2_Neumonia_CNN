@@ -136,11 +136,13 @@ def mapa_activacion(ctx: Contexto, mapas: np.ndarray, tam: int, clase: int = 1) 
     return (cam - cam.min()) / rango if rango > 1e-8 else np.zeros_like(cam)
 
 
-def _jet(v: np.ndarray) -> np.ndarray:
-    r = np.clip(1.5 - np.abs(4 * v - 3), 0, 1)
-    g = np.clip(1.5 - np.abs(4 * v - 2), 0, 1)
-    b = np.clip(1.5 - np.abs(4 * v - 1), 0, 1)
-    return np.stack([r, g, b], axis=-1)
+def _calor(v: np.ndarray) -> np.ndarray:
+    """Rampa ámbar → naranja → rojo marcador: el calor sube hacia el color de la clase NEUMONÍA."""
+    paradas = np.array([[0.95, 0.76, 0.30], [0.93, 0.45, 0.18], [0.85, 0.21, 0.21]], dtype=np.float32)
+    v = np.clip(v, 0, 1)[..., None]
+    bajo = paradas[0] + (paradas[1] - paradas[0]) * np.clip(v * 2, 0, 1)
+    alto = paradas[1] + (paradas[2] - paradas[1]) * np.clip(v * 2 - 1, 0, 1)
+    return np.where(v < 0.5, bajo, alto)
 
 
 def superponer(img_gris: Image.Image, cam: np.ndarray, opacidad: float = 0.45) -> Image.Image:
@@ -148,8 +150,8 @@ def superponer(img_gris: Image.Image, cam: np.ndarray, opacidad: float = 0.45) -
     tam = cam.shape[0]
     base = np.asarray(img_gris.convert("L").resize((tam, tam), Image.BILINEAR), dtype=np.float32) / 255
     base = np.repeat(base[..., None], 3, axis=-1)
-    alfa = (opacidad * np.clip(cam * 1.4 - 0.2, 0, 1))[..., None]
-    mezcla = ((1 - alfa) * base + alfa * _jet(cam)).clip(0, 1)
+    alfa = (opacidad * np.clip(cam * 1.5 - 0.25, 0, 1))[..., None]
+    mezcla = ((1 - alfa) * base + alfa * _calor(cam)).clip(0, 1)
     return Image.fromarray((mezcla * 255).astype(np.uint8))
 
 

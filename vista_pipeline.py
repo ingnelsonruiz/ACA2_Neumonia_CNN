@@ -33,7 +33,7 @@ def render(ctx):
     p = ctx.meta["preprocesamiento"]
     seccion("PREPROCESAMIENTO (IDÉNTICO EN ENTRENAMIENTO Y EN ESTA APP)")
     pasos = '<span class="flecha">➜</span>'.join(
-        f'<div class="step"><b>PASO {i}</b><span>{t}</span></div>' for i, t in enumerate(p["pasos"], 1))
+        f'<div class="step"><b>Paso {i}</b><span>{t}</span></div>' for i, t in enumerate(p["pasos"], 1))
     st.markdown(f'<div class="flow">{pasos}</div>', unsafe_allow_html=True)
     panel("Las radiografías originales miden entre ~400 y ~2 900 píxeles de ancho. El notebook las guarda en "
           "memoria a 256×256 en escala de grises (decodificación JPEG reducida con <code>draft</code>) y la red "

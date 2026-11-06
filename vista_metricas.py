@@ -6,7 +6,7 @@ import plotly.graph_objects as go
 import streamlit as st
 
 from ayuda import ayuda, expansor_indicadores
-from config import AMBER, COLOR_MODELO, CYAN, GREEN, PINK, VIOLET
+from config import AMBER, COLOR_MODELO, CYAN, GREEN, NARANJA, PINK, VIOLET
 from ui import estilo, kpi, mostrar, panel, seccion, tabla
 
 COLUMNAS = {"accuracy": "Exactitud", "precision": "Precisión", "recall_sensibilidad": "Sensibilidad",
@@ -38,8 +38,8 @@ def render(ctx):
         texto = [[f"<b>{cm[i, j]}</b><br>{pct[i, j]:.1%}<br>{e}" for j, e in enumerate(fila)]
                  for i, fila in enumerate([["VN", "FP"], ["FN", "VP"]])]
         fig = go.Figure(go.Heatmap(z=pct, x=["Pred. NORMAL", "Pred. NEUMONÍA"], y=["Real NORMAL", "Real NEUMONÍA"],
-                                   text=texto, texttemplate="%{text}", colorscale=[[0, "#0d1b2a"], [1, CYAN]],
-                                   showscale=False, textfont=dict(size=16)))
+                                   text=texto, texttemplate="%{text}", colorscale=[[0, "#F4F8FB"], [1, "#8DB4D3"]],
+                                   showscale=False, textfont=dict(size=16, color="#0F2A3D")))
         fig.update_yaxes(autorange="reversed")
         mostrar(estilo(fig, alto=400))
         st.caption(f"{r['fn']} neumonías no detectadas y {r['fp']} falsas alarmas sobre "
@@ -51,8 +51,9 @@ def render(ctx):
             auc = ctx.principal["roc_auc"] if nombre == "EffNet-B0" else ctx.base["roc_auc"]
             fig.add_trace(go.Scatter(x=roc["fpr"], y=roc["tpr"], name=f"{nombre} (AUC {auc:.3f})",
                                      line=dict(color=COLOR_MODELO.get(nombre), width=3)))
-        fig.add_trace(go.Scatter(x=[0, 1], y=[0, 1], name="Azar", line=dict(color="gray", dash="dash")))
-        fig.update_layout(xaxis_title="1 − especificidad", yaxis_title="Sensibilidad")
+        fig.add_trace(go.Scatter(x=[0, 1], y=[0, 1], name="Azar", line=dict(color="#9FB2C0", dash="dash")))
+        fig.update_layout(xaxis_title="1 − especificidad", yaxis_title="Sensibilidad",
+                          legend=dict(x=0.98, y=0.04, xanchor="right", yanchor="bottom"))
         mostrar(estilo(fig, alto=400))
 
     seccion("COMPARACIÓN DE MODELOS Y UMBRALES")
@@ -63,7 +64,7 @@ def render(ctx):
     seccion("DESEMPEÑO POR SUBTIPO")
     s = pd.DataFrame(ctx.meta["metricas_por_subtipo"])
     fig = go.Figure(go.Bar(x=s["subtipo"].str.capitalize(), y=s["tasa_acierto"],
-                           marker_color=[GREEN, PINK, AMBER][:len(s)],
+                           marker_color=[{"normal": GREEN, "bacteria": PINK, "virus": NARANJA}.get(t, AMBER) for t in s["subtipo"]],
                            text=[f"{v:.1%}<br>n = {n}" for v, n in zip(s["tasa_acierto"], s["imagenes"])],
                            textposition="outside"))
     fig.update_layout(yaxis=dict(range=[0, 1.12], title="Tasa de acierto"))

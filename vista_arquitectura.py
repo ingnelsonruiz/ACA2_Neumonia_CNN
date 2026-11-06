@@ -4,7 +4,7 @@ import pandas as pd
 import streamlit as st
 
 from config import AMBER, CYAN, DIR_ARTEFACTOS, GREEN, PINK, VIOLET
-from ui import kpi, panel, seccion, tabla, tarjeta
+from ui import kpi, oracion, panel, seccion, tabla, tarjeta
 
 CAPAS_EFFNET = [
     ("ENTRADA", "224×224×3"), ("STEM", "Conv 3×3 · 32"), ("MBConv1", "16 canales"),
@@ -20,7 +20,7 @@ CAPAS_BASE = [
 
 
 def _flujo(capas):
-    html = '<span class="flecha">➜</span>'.join(f'<div class="step"><b>{t}</b><span>{d}</span></div>'
+    html = '<span class="flecha">➜</span>'.join(f'<div class="step"><b>{oracion(t)}</b><span>{d}</span></div>'
                                                  for t, d in capas)
     st.markdown(f'<div class="flow">{html}</div>', unsafe_allow_html=True)
 

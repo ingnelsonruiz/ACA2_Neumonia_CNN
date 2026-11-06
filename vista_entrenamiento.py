@@ -25,7 +25,7 @@ def render(ctx):
 
     fig = go.Figure()
     for modelo, sub in h.groupby("modelo", sort=False):
-        color = COLOR_MODELO.get(modelo, "#ffffff")
+        color = COLOR_MODELO.get(modelo, "#0F2A3D")
         if col_ent:
             fig.add_trace(go.Scatter(x=sub["epoca"], y=sub[col_ent], name=f"{modelo} · entrenamiento",
                                      line=dict(color=color, dash="dash", width=2)))
@@ -35,7 +35,7 @@ def render(ctx):
         fig.add_trace(go.Scatter(x=[mejor["epoca"]], y=[mejor[col_val]], mode="markers", showlegend=False,
                                  marker=dict(symbol="star", size=16, color=color, line=dict(color="white", width=1)),
                                  hovertext=f"{modelo}: mejor época (F1 val {mejor['val_f1']:.4f})"))
-    fig.add_vline(x=fin_fase1 + 0.5, line=dict(color="gray", dash="dot"),
+    fig.add_vline(x=fin_fase1 + 0.5, line=dict(color="#9FB2C0", dash="dot"),
                   annotation_text="EffNet: fin fase 1", annotation_position="top")
     fig.update_layout(xaxis_title="Época", yaxis_title=metrica)
     mostrar(estilo(fig, alto=460))

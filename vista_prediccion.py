@@ -13,8 +13,8 @@ def _medidor(prob, umbral):
         mode="gauge+number", value=prob * 100, number=dict(suffix=" %", font=dict(size=40)),
         title=dict(text="Probabilidad de neumonía"),
         gauge=dict(axis=dict(range=[0, 100]), bar=dict(color=PINK if prob >= umbral else GREEN),
-                   steps=[dict(range=[0, umbral * 100], color="rgba(0,255,136,0.12)"),
-                          dict(range=[umbral * 100, 100], color="rgba(255,45,120,0.12)")],
+                   steps=[dict(range=[0, umbral * 100], color="rgba(29,143,122,0.14)"),
+                          dict(range=[umbral * 100, 100], color="rgba(217,54,54,0.14)")],
                    threshold=dict(line=dict(color=AMBER, width=4), value=umbral * 100))))
     return estilo(fig, alto=300)
 
@@ -65,7 +65,7 @@ def render(ctx):
     margen = abs(r.prob_neumonia - ctx.umbral)
     if margen < 0.10:
         st.warning("La probabilidad está muy cerca del umbral: caso dudoso que debería priorizarse para lectura humana.")
-    panel("<b>Cómo leer el mapa:</b> las zonas rojas y amarillas son las que más aumentaron la probabilidad de "
+    panel("<b>Cómo leer el mapa:</b> las zonas en ámbar y rojo son las que más aumentaron la probabilidad de "
           "neumonía. En un caso positivo se espera que coincidan con opacidades en los campos pulmonares. "
           "Si el calor aparece en bordes, letras o fuera del tórax, desconfíe del resultado.<br><br>"
           "⚠️ <b>Prototipo académico.</b> Entrenado con radiografías pediátricas (1 a 5 años) de un único hospital; "

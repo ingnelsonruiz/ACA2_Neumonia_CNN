@@ -32,7 +32,7 @@ def render(ctx):
                                ("f1_macro", "F1 macro", CYAN)]:
         fig.add_trace(go.Scatter(x=b["umbral"], y=b[col], name=nombre, line=dict(color=color, width=3)))
     fig.add_vline(x=ctx.umbral, line=dict(color=AMBER, dash="dash", width=2), annotation_text="activo")
-    fig.add_vline(x=ctx.meta["umbral"], line=dict(color="white", dash="dot", width=1), annotation_text="óptimo F1",
+    fig.add_vline(x=ctx.meta["umbral"], line=dict(color="#0F2A3D", dash="dot", width=1), annotation_text="óptimo F1",
                   annotation_position="bottom right")
     fig.update_layout(xaxis_title="Umbral sobre P(neumonía)", yaxis=dict(range=[0, 1.05], title="Valor"))
     mostrar(estilo(fig, alto=440, titulo="SENSIBILIDAD, ESPECIFICIDAD Y F1 SEGÚN EL UMBRAL"))

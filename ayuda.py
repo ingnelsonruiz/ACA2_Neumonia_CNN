@@ -63,7 +63,7 @@ def ayuda(nombre: str) -> str:
     return f"{definicion} {lectura}".replace('"', "'")
 
 
-def expansor_indicadores(nombres: list[str], titulo: str = "ℹ️ ¿Qué significa cada indicador?"):
+def expansor_indicadores(nombres: list[str], titulo: str = "¿Qué significa cada indicador?"):
     with st.expander(titulo):
         for n in nombres:
             definicion, lectura = GLOSARIO[n]
