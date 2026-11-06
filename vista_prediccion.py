@@ -22,8 +22,14 @@ def _medidor(prob, umbral):
 
 
 def render(ctx):
-    fuente = st.radio("Origen de la imagen", ["Ejemplos del conjunto de prueba", "Subir radiografía"],
-                      horizontal=True)
+    opciones = ["🩻  Usar un ejemplo de prueba", "⬆️  Subir mi radiografía"]
+    try:   # Streamlit ≥ 1.40: grupo de botones
+        eleccion = st.segmented_control("Origen de la imagen", opciones, default=opciones[0],
+                                        selection_mode="single", key="origen_imagen")
+    except AttributeError:
+        eleccion = st.radio("Origen de la imagen", opciones, horizontal=True, key="origen_imagen")
+    # Si el usuario vuelve a pulsar el botón activo, segmented_control devuelve None: se conserva el ejemplo
+    fuente = "Subir radiografía" if eleccion == opciones[1] else "Ejemplos del conjunto de prueba"
     if fuente == "Subir radiografía":
         archivo = st.file_uploader("Radiografía de tórax AP (JPG o PNG)", type=["jpg", "jpeg", "png"])
         if archivo is None:
