@@ -90,6 +90,10 @@ code { color: var(--azul) !important; background: var(--plomo-suave) !important;
     overflow-wrap: normal; word-break: keep-all; hyphens: none; text-wrap: balance;
     color: var(--tinta);
 }
+[data-testid="stMain"] .hero .lema, .hero .lema {
+    font-stretch: 80%; font-variation-settings: "wdth" 80; font-weight: 650; font-size: 1.35rem;
+    color: var(--azul) !important; margin: -0.4rem 0 0.9rem; max-width: 30ch; line-height: 1.25;
+}
 .hero .bajada { font-size: 1.22rem; line-height: 1.45; color: var(--tinta-2); max-width: 38ch; margin: 0 0 1.8rem; }
 .lectura {
     display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1.2rem;

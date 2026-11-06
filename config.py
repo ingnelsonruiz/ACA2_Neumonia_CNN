@@ -25,7 +25,8 @@ COLOR_CLASE = {"NORMAL": GREEN, "NEUMONIA": PINK}
 
 # ── Metadatos académicos ─────────────────────────────────────────────────────
 PROYECTO = "Proyecto ACA 2"
-TITULO_APP = "Radiografía inteligente"
+TITULO_APP = "Negatoscopio IA"
+LEMA = "Lectura asistida de radiografías de tórax pediátricas"
 SUBTITULO = ("Detección de neumonía en radiografías de tórax con redes neuronales "
              "convolucionales y despliegue interactivo en Streamlit")
 ASIGNATURA = "Aprendizaje Automático"
@@ -56,6 +57,7 @@ RUTA_PESOS_CAM = DIR_ARTEFACTOS / "pesos_cam.npy"
 DIR_EJEMPLOS = DIR_ARTEFACTOS / "ejemplos"
 DIR_FIGURAS = DIR_ARTEFACTOS / "figuras"
 RUTA_DB = RAIZ / "chest_xray.duckdb"
+RUTA_POSTER = DIR_ARTEFACTOS / "poster.png"   # reemplace este archivo para actualizar el póster
 
 # ── Dataset ──────────────────────────────────────────────────────────────────
 CITA_DATASET = ("Kermany, D. S., Goldbaum, M., Cai, W., et al. (2018). Identifying medical diagnoses "

@@ -1,4 +1,4 @@
-"""Radiografía Inteligente — detección de neumonía con redes neuronales convolucionales.
+"""Negatoscopio IA — detección de neumonía con redes neuronales convolucionales.
 
 Proyecto ACA 2 · Aprendizaje Automático · Especialización en Inteligencia Artificial (CUN)
 
@@ -15,7 +15,7 @@ import streamlit as st
 from PIL import Image
 
 st.set_page_config(
-    page_title="Radiografía Inteligente · Neumonía",
+    page_title="Negatoscopio IA · Lectura asistida de radiografías",
     page_icon="🫁",
     layout="wide",
     initial_sidebar_state="expanded",
@@ -24,13 +24,13 @@ st.set_page_config(
 import estilos                                                                   # noqa: E402
 from ayuda import ayuda, expansor_indicadores                                    # noqa: E402
 from config import (AMBER, ASIGNATURA, CODIGOS, CYAN, DOCENTE, EQUIPO, GREEN,     # noqa: E402
-                    GRUPO, PINK, PROYECTO, SUBTITULO, TITULO_APP, URL_APP,
+                    GRUPO, LEMA, PINK, PROYECTO, SUBTITULO, TITULO_APP, URL_APP,
                     URL_REPO, URL_VIDEO, VIOLET)
 from modelo import cargar_imagen_gris, construir_contexto, predecir, superponer  # noqa: E402
 from ui import kpi, panel                                                        # noqa: E402
 import vista_arquitectura, vista_dataset, vista_documentacion, vista_entrenamiento  # noqa: E402
 import vista_equipo, vista_historia, vista_metricas, vista_pipeline              # noqa: E402
-import vista_informe, vista_prediccion, vista_sql, vista_umbral                  # noqa: E402
+import vista_informe, vista_poster, vista_prediccion, vista_sql, vista_umbral                  # noqa: E402
 
 # Recorrido del proyecto: (clave, título, paso del ACA, qué contiene, criterio de la rúbrica, módulo).
 # El orden sigue el flujo metodológico del ACA. Para agregar una sección, añada una tupla aquí.
@@ -61,12 +61,15 @@ SECCIONES = [
     ("umbral", "Umbral clínico", "Paso 4",
      "Cómo cambian sensibilidad y especificidad al mover el punto de corte.",
      "Métricas de evaluación, 15 %", vista_umbral),
+    ("poster", "Póster", "Entregable",
+     "La infografía del proyecto para la sustentación, con descarga en alta calidad.",
+     "Póster tipo infografía, 15 %", vista_poster),
     ("equipo", "Equipo", "Créditos", "Integrantes, alcance y tecnologías del proyecto.", "Póster y video", vista_equipo),
     ("documentacion", "Documentación", "Manual",
      "Manual de uso descargable y glosario de cada indicador.", "Reproducibilidad", vista_documentacion),
 ]
-FILAS = [["informe", "historia", "dataset"], ["sql", "pipeline", "arquitectura", "entrenamiento"],
-         ["metricas", "umbral", "equipo", "documentacion"]]
+FILAS = [["informe", "historia", "poster"], ["dataset", "sql", "pipeline", "arquitectura"],
+         ["entrenamiento", "metricas", "umbral", "equipo", "documentacion"]]
 ANCHOS = {"informe": 2}
 
 
@@ -169,6 +172,7 @@ def encabezado(ctx):
 <div class="hero">
   <div>
     <h1>{TITULO_APP}</h1>
+    <p class="lema">{LEMA}</p>
     <p class="bajada">Una red neuronal convolucional lee radiografías de tórax de niños, señala las que
     muestran neumonía y marca en la imagen la zona que motivó su decisión.</p>
     <div class="lectura">{lectura}</div>
