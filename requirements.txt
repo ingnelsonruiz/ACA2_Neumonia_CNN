@@ -1,0 +1,7 @@
+streamlit>=1.40
+onnxruntime>=1.18
+numpy
+pillow
+pandas
+plotly
+duckdb
