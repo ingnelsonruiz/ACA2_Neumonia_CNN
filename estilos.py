@@ -258,6 +258,24 @@ section[data-testid="stSidebar"] a { color: #9FD1FF !important; }
     padding: 1.2rem 1.4rem 1.4rem; box-shadow: 0 24px 50px -34px rgba(15,42,61,0.55); margin-bottom: 2.6rem;
 }
 
+/* ── Selector de origen de la imagen: botones grandes ─────────────────── */
+[data-testid="stMain"] [data-testid="stButtonGroup"] { gap: 10px !important; flex-wrap: wrap; }
+[data-testid="stMain"] [data-testid="stButtonGroup"] button {
+    min-height: 52px; padding: 0 1.4rem !important; border-radius: 6px !important;
+    background: #FFFFFF !important; border: 2px solid var(--plomo) !important;
+    box-shadow: 0 2px 0 var(--plomo) !important; transition: border-color .15s, transform .15s;
+}
+[data-testid="stMain"] [data-testid="stButtonGroup"] button p {
+    font-size: 1.02rem !important; font-weight: 700 !important; color: var(--tinta) !important;
+}
+[data-testid="stMain"] [data-testid="stButtonGroup"] button:hover { border-color: var(--azul) !important; transform: translateY(-1px); }
+[data-testid="stMain"] [data-testid="stButtonGroup"] button[aria-checked="true"],
+[data-testid="stMain"] [data-testid="stButtonGroup"] button[kind*="Active"] {
+    background: var(--tinta) !important; border-color: var(--tinta) !important; box-shadow: 0 2px 0 #06141F !important;
+}
+[data-testid="stMain"] [data-testid="stButtonGroup"] button[aria-checked="true"] p,
+[data-testid="stMain"] [data-testid="stButtonGroup"] button[kind*="Active"] p { color: #FFFFFF !important; }
+
 /* ── Recorrido: tarjetas que funcionan como botones ───────────────────── */
 .nav-cab { margin: 1rem 0 0.9rem; padding-top: 1.2rem; border-top: 2px solid var(--tinta); }
 [class*="st-key-nav_"] { position: relative; height: 100%; gap: 0 !important; }
@@ -310,6 +328,41 @@ section[data-testid="stSidebar"] a { color: #9FD1FF !important; }
 .st-key-informe [data-testid="stImageCaption"], .st-key-informe [data-testid="caption"] {
     color: var(--tinta-2) !important; font-size: 0.9rem !important; text-align: left;
 }
+/* ── Lectura asistida por IA (informe de estilo radiológico) ──────────── */
+[data-testid="stMain"] .veredicto-i { padding: 1rem 1.2rem; border-radius: 4px; text-align: center; color: #FFFFFF !important;
+    font-stretch: 65%; font-variation-settings: "wdth" 65; font-weight: 850; font-size: 2rem; line-height: 1; background: var(--ambar, #C98A12); }
+.lectura-ia { margin-top: 1.4rem; border: 1px solid var(--plomo); border-radius: 6px; background: #FFFFFF; overflow: hidden; }
+.lia-cab { display: flex; justify-content: space-between; align-items: center; gap: 1rem; padding: 1rem 1.3rem;
+           background: var(--tinta); }
+[data-testid="stMain"] .lia-tit { color: #FFFFFF !important; font-stretch: 72%; font-variation-settings: "wdth" 72;
+           font-weight: 800; font-size: 1.6rem; line-height: 1.1; }
+[data-testid="stMain"] .lia-sub { color: #AFC4D3 !important; font-size: 0.9rem; }
+[data-testid="stMain"] .lia-res { color: #FFFFFF !important; font-stretch: 65%; font-variation-settings: "wdth" 65; font-weight: 850;
+           font-size: 1.5rem; padding: 0.35rem 0.9rem; border-radius: 4px; white-space: nowrap; }
+.lia-res.res-m { background: var(--rojo); } .lia-res.res-b { background: var(--verde); } .lia-res.res-i { background: #C98A12; }
+.lia-campos { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); margin: 0;
+              border-bottom: 1px solid var(--plomo); }
+.lia-campos > div { padding: 0.75rem 1.3rem; border-right: 1px solid var(--plomo-suave); }
+[data-testid="stMain"] .lia-campos dt { font-size: 0.8rem; color: var(--tinta-2) !important; font-weight: 600; }
+[data-testid="stMain"] .lia-campos dd { margin: 0.15rem 0 0; font-size: 1.05rem; font-weight: 700; line-height: 1.3; color: var(--tinta) !important; }
+[data-testid="stMain"] .lia-campos dd small { display: block; font-size: 0.8rem; font-weight: 500; color: var(--tinta-2) !important; }
+.lia-cuerpo { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0; }
+.lia-bloque { padding: 0.9rem 1.3rem 1rem; border-bottom: 1px solid var(--plomo-suave); }
+.lia-bloque:nth-child(odd) { border-right: 1px solid var(--plomo-suave); }
+[data-testid="stMain"] .lia-bloque h5 { margin: 0 0 0.35rem; padding: 0; font-size: 0.82rem; font-weight: 750;
+           color: var(--azul) !important; text-transform: none; }
+[data-testid="stMain"] .lia-bloque p, [data-testid="stMain"] .lia-bloque li { font-size: 0.98rem; line-height: 1.5; margin: 0; }
+.lia-bloque ul { margin: 0; padding-left: 1.1rem; }
+.lia-bloque li + li { margin-top: 0.3rem; }
+[data-testid="stMain"] .lia-conclusion p { font-weight: 700; font-size: 1.08rem; }
+.lia-qc { list-style: none; padding-left: 0 !important; }
+.lia-qc li { position: relative; padding-left: 1.4rem; }
+.lia-qc li::before { position: absolute; left: 0; top: 0; font-weight: 800; }
+.lia-qc li.ok::before { content: "✓"; color: var(--verde); }
+.lia-qc li.alerta::before { content: "!"; color: #C98A12; }
+[data-testid="stMain"] .lia-qc li.alerta { color: #7A5300 !important; }
+[data-testid="stMain"] .lia-pie { padding: 0.7rem 1.3rem; font-size: 0.85rem; color: var(--tinta-2) !important; background: var(--luz-alta); }
+@media (max-width: 900px) { .lia-cuerpo { grid-template-columns: 1fr; } .lia-bloque:nth-child(odd) { border-right: none; } }
 </style>
 """
 
