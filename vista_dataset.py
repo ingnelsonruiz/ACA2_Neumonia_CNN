@@ -23,7 +23,9 @@ def render(ctx):
     c[1].markdown(kpi(f"{d['duplicados']:,}", "Duplicados exactos", PINK,
                       "Archivos con el mismo hash MD5, eliminados antes de partir."), unsafe_allow_html=True)
     c[2].markdown(kpi(f"{d['imagenes_unicas']:,}", "Imágenes únicas", GREEN), unsafe_allow_html=True)
-    pac = sum(r["pacientes"] for r in d["distribucion"])
+    # Total por partición: cada paciente está en una sola (sin fuga), y un mismo paciente puede
+    # tener imágenes bacterianas y virales, así que sumar por subtipo lo contaría dos veces.
+    pac = sum(r["pacientes"] for r in d["particiones"])
     c[3].markdown(kpi(f"{pac:,}", "Pacientes", VIOLET,
                       "Identificados a partir del nombre de archivo (personN / IM-NNNN)."), unsafe_allow_html=True)
 

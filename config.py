@@ -39,7 +39,7 @@ EQUIPO = [
 # Completar al publicar (se muestran en la app y en el póster)
 URL_APP = ""
 URL_VIDEO = ""
-URL_REPO = ""
+URL_REPO = "https://github.com/ingnelsonruiz/ACA2_Neumonia_CNN"
 
 # ── Rutas de artefactos (generados por el notebook ACA2_Neumonia_CNN.ipynb) ──
 RAIZ = Path(__file__).parent
