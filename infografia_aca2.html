@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Negatoscopio IA — Póster ACA 2</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+  :root {
+    --bg: #0f1117;
+    --card: #1a1d27;
+    --card2: #22263a;
+    --accent: #4f8ef7;
+    --accent2: #34c88a;
+    --accent3: #f7c94f;
+    --accent4: #e05d5d;
+    --text: #e8eaf0;
+    --muted: #8b90a4;
+    --border: rgba(255,255,255,0.08);
+    --radius: 12px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    padding: 32px 24px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 24px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px 32px;
+    margin-bottom: 20px;
+  }
+  .inst { font-size: 11px; color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 6px; }
+  .title { font-size: 26px; font-weight: 700; color: #fff; line-height: 1.2; margin-bottom: 6px; }
+  .subtitle { font-size: 14px; color: var(--muted); margin-bottom: 14px; }
+  .badges { display: flex; flex-wrap: wrap; gap: 8px; }
+  .badge {
+    font-size: 11px; font-weight: 600; padding: 4px 10px;
+    border-radius: 20px; letter-spacing: 0.04em;
+  }
+  .badge-blue   { background: rgba(79,142,247,0.15); color: #7eb8ff; border: 1px solid rgba(79,142,247,0.3); }
+  .badge-green  { background: rgba(52,200,138,0.12); color: #5fd4a0; border: 1px solid rgba(52,200,138,0.25); }
+  .badge-yellow { background: rgba(247,201,79,0.12); color: #f7c94f; border: 1px solid rgba(247,201,79,0.25); }
+  .badge-red    { background: rgba(224,93,93,0.12);  color: #f08080; border: 1px solid rgba(224,93,93,0.25); }
+
+  .team-box { text-align: right; min-width: 240px; }
+  .team-label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px; }
+  .team-name { font-size: 13px; color: var(--text); line-height: 1.8; }
+
+  /* ── GRID ── */
+  .grid-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; margin-bottom: 16px; }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+  .grid-5 { display: grid; grid-template-columns: repeat(5,1fr); gap: 12px; margin-bottom: 16px; }
+
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+  }
+  .card-title {
+    font-size: 11px; font-weight: 600; color: var(--muted);
+    text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 14px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .card-title .dot {
+    width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0;
+  }
+
+  /* ── PREGUNTA ORIENTADORA ── */
+  .question {
+    font-size: 15px; color: var(--text); line-height: 1.6;
+    border-left: 3px solid var(--accent); padding-left: 16px; margin-top: 4px;
+  }
+
+  /* ── PROBLEMA ── */
+  .prob-text { font-size: 13px; color: var(--muted); line-height: 1.65; }
+  .prob-items { list-style: none; margin-top: 10px; }
+  .prob-items li { font-size: 12.5px; color: var(--text); padding: 4px 0; display: flex; gap: 8px; }
+  .prob-items li::before { content: "▸"; color: var(--accent); flex-shrink: 0; }
+
+  /* ── DATASET ── */
+  .ds-stat { text-align: center; }
+  .ds-num { font-size: 28px; font-weight: 700; color: var(--accent); }
+  .ds-label { font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .ds-bar { display: flex; border-radius: 6px; overflow: hidden; height: 10px; margin-top: 12px; }
+  .ds-bar-neumonia { background: var(--accent4); flex: 74; }
+  .ds-bar-normal   { background: var(--accent2); flex: 26; }
+  .ds-bar-labels { display: flex; justify-content: space-between; margin-top: 4px; }
+  .ds-bar-labels span { font-size: 11px; color: var(--muted); }
+
+  /* ── FLUJO METODOLÓGICO ── */
+  .flow-steps { display: flex; align-items: stretch; gap: 0; }
+  .flow-step {
+    flex: 1; text-align: center; padding: 14px 8px;
+    background: var(--card2); border-radius: 8px; position: relative;
+    border: 1px solid var(--border);
+  }
+  .flow-step + .flow-step { margin-left: 6px; }
+  .flow-num {
+    font-size: 10px; font-weight: 700; color: var(--accent);
+    margin-bottom: 4px; letter-spacing: 0.06em;
+  }
+  .flow-name { font-size: 11px; font-weight: 600; color: var(--text); line-height: 1.3; margin-bottom: 3px; }
+  .flow-tech { font-size: 10px; color: var(--muted); line-height: 1.3; }
+  .flow-arrow {
+    position: absolute; right: -10px; top: 50%; transform: translateY(-50%);
+    font-size: 14px; color: var(--accent); z-index: 2; display: none;
+  }
+
+  /* ── ARQUITECTURA ── */
+  .arch-flow { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+  .arch-block {
+    background: var(--card2); border-radius: 8px; padding: 10px 12px;
+    border: 1px solid var(--border); font-size: 11.5px; text-align: center;
+    flex: 1; min-width: 90px;
+  }
+  .arch-block .ab-name { font-weight: 600; color: var(--text); font-size: 12px; margin-bottom: 2px; }
+  .arch-block .ab-desc { color: var(--muted); font-size: 10.5px; }
+  .arch-block.highlight { border-color: var(--accent); background: rgba(79,142,247,0.1); }
+  .arch-arrow { color: var(--accent); font-size: 18px; flex-shrink: 0; }
+
+  .params-row { display: flex; gap: 10px; margin-top: 12px; flex-wrap: wrap; }
+  .param-pill {
+    background: var(--card2); border: 1px solid var(--border);
+    border-radius: 20px; padding: 4px 12px; font-size: 11px; color: var(--muted);
+  }
+  .param-pill span { color: var(--text); font-weight: 600; }
+
+  /* ── MÉTRICAS ── */
+  .metrics-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 10px; }
+  .metric-card {
+    background: var(--card2); border-radius: 10px; padding: 14px;
+    border: 1px solid var(--border); text-align: center;
+  }
+  .metric-val { font-size: 28px; font-weight: 700; line-height: 1; }
+  .metric-name { font-size: 11px; color: var(--muted); margin-top: 4px; }
+  .metric-sub  { font-size: 10px; color: var(--muted); opacity: 0.7; margin-top: 2px; }
+
+  /* ── EDA ── */
+  .eda-items { display: flex; flex-direction: column; gap: 8px; margin-top: 6px; }
+  .eda-item { display: flex; gap: 10px; align-items: flex-start; font-size: 12.5px; }
+  .eda-num { font-size: 11px; font-weight: 700; color: var(--accent); min-width: 20px; padding-top: 1px; }
+  .eda-text { color: var(--muted); line-height: 1.5; }
+  .eda-text strong { color: var(--text); }
+
+  /* ── AUGMENTATION ── */
+  .aug-list { margin-top: 8px; display: flex; flex-direction: column; gap: 6px; }
+  .aug-row { display: flex; align-items: center; gap: 8px; font-size: 12px; }
+  .aug-tag {
+    background: rgba(79,142,247,0.1); color: #7eb8ff;
+    border: 1px solid rgba(79,142,247,0.2);
+    border-radius: 4px; padding: 2px 8px; font-size: 10.5px; font-weight: 600;
+    white-space: nowrap; min-width: 170px;
+  }
+  .aug-why { color: var(--muted); font-size: 11px; }
+
+  /* ── COMPARATIVA ── */
+  .compare-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 12px; }
+  .compare-table th {
+    color: var(--muted); font-size: 11px; font-weight: 600; text-align: left;
+    padding: 6px 10px; border-bottom: 1px solid var(--border);
+  }
+  .compare-table td { padding: 8px 10px; border-bottom: 1px solid rgba(255,255,255,0.04); }
+  .compare-table tr.winner td { color: var(--accent2); font-weight: 600; }
+  .compare-table td.metric { font-weight: 600; color: var(--text); }
+
+  /* ── APP PREVIEW ── */
+  .app-preview {
+    background: #0d1117; border-radius: 10px; overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.1); margin-top: 6px;
+  }
+  .app-bar { background: #161b22; padding: 8px 14px; display: flex; gap: 6px; align-items: center; }
+  .app-dot { width: 8px; height: 8px; border-radius: 50%; }
+  .app-title { font-size: 11px; color: #8b949e; margin-left: 6px; }
+  .app-body { padding: 16px; }
+  .app-upload {
+    border: 1.5px dashed rgba(255,255,255,0.15); border-radius: 8px;
+    padding: 20px; text-align: center; margin-bottom: 12px;
+  }
+  .app-upload-icon { font-size: 24px; margin-bottom: 6px; }
+  .app-upload-text { font-size: 11px; color: #8b949e; }
+  .app-result {
+    background: rgba(52,200,138,0.08); border: 1px solid rgba(52,200,138,0.2);
+    border-radius: 8px; padding: 12px; display: flex; align-items: center; gap: 12px;
+  }
+  .app-result-icon { font-size: 20px; }
+  .app-result-text { font-size: 12px; }
+  .app-result-title { font-weight: 700; color: #5fd4a0; font-size: 13px; }
+  .app-result-sub { color: #8b949e; font-size: 11px; margin-top: 2px; }
+  .app-heatmap {
+    width: 100%; height: 60px; background: linear-gradient(to right,
+      rgba(0,0,255,0.3), rgba(0,255,0,0.3), rgba(255,165,0,0.5), rgba(255,0,0,0.6));
+    border-radius: 6px; margin-top: 10px; position: relative; overflow: hidden;
+  }
+  .hm-label { position: absolute; bottom: 4px; left: 8px; font-size: 10px; color: rgba(255,255,255,0.6); }
+
+  /* ── CONCLUSIONES ── */
+  .concl-list { list-style: none; margin-top: 6px; display: flex; flex-direction: column; gap: 10px; }
+  .concl-list li { display: flex; gap: 10px; align-items: flex-start; font-size: 12.5px; }
+  .concl-num {
+    background: var(--accent); color: #fff; font-size: 10px; font-weight: 700;
+    min-width: 20px; height: 20px; border-radius: 50%; display: flex;
+    align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px;
+  }
+  .concl-text { color: var(--muted); line-height: 1.5; }
+  .concl-text strong { color: var(--text); }
+
+  /* ── LINKS ── */
+  .links-row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 12px; }
+  .link-btn {
+    display: flex; align-items: center; gap: 8px;
+    background: var(--card2); border: 1px solid var(--border);
+    border-radius: 8px; padding: 10px 16px; text-decoration: none;
+    color: var(--text); font-size: 12px; transition: border-color 0.2s;
+  }
+  .link-btn:hover { border-color: var(--accent); }
+  .link-icon { font-size: 16px; }
+  .link-label { font-size: 10px; color: var(--muted); display: block; }
+  .link-url { font-size: 11px; color: var(--accent); }
+
+  /* ── FOOTER ── */
+  .footer {
+    text-align: center; margin-top: 20px;
+    font-size: 11px; color: var(--muted);
+    border-top: 1px solid var(--border); padding-top: 16px;
+  }
+
+  @media print {
+    body { background: white; color: #111; padding: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════════ HEADER ══════════ -->
+<div class="header">
+  <div>
+    <div class="inst">CUN · Especialización en Inteligencia Artificial · Aprendizaje Automático</div>
+    <div class="title">🫁 Negatoscopio IA</div>
+    <div class="subtitle">Detección de neumonía en radiografías de tórax con redes neuronales convolucionales y despliegue en Streamlit</div>
+    <div class="badges">
+      <span class="badge badge-blue">EfficientNet-B0</span>
+      <span class="badge badge-green">Transfer Learning</span>
+      <span class="badge badge-yellow">PyTorch → ONNX</span>
+      <span class="badge badge-blue">DuckDB · SQL</span>
+      <span class="badge badge-red">Grad-CAM / CAM</span>
+      <span class="badge badge-green">Streamlit</span>
+    </div>
+  </div>
+  <div class="team-box">
+    <div class="team-label">Docente: Hamilton Rivera Flor</div>
+    <div class="team-name">
+      Nelson Javier Ruiz Lozano<br>
+      Lina María Cabezas Alvear<br>
+      Yehimy Alexandra Cabrera<br>
+      Eliana Andrea Medina Forero
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ FILA 1: PROBLEMA + DATASET ══════════ -->
+<div class="grid-3">
+
+  <!-- PREGUNTA ORIENTADORA -->
+  <div class="card">
+    <div class="card-title"><span class="dot" style="background:var(--accent)"></span>Pregunta orientadora</div>
+    <p class="question">
+      ¿Cómo aprovechar una CNN preentrenada para distinguir radiografías de tórax
+      normales de radiografías con neumonía, maximizando la detección de casos
+      positivos y ofreciendo una explicación visual vía Streamlit?
+    </p>
+    <ul class="prob-items" style="margin-top:14px">
+      <li>Dominio salud – diagnóstico pediátrico asistido por IA</li>
+      <li>Desbalance de clases ~3:1 (neumonía vs. normal)</li>
+      <li>Riesgo de <em>data leakage</em> por múltiples radiografías por paciente</li>
+      <li>Restricción de despliegue: modelo ligero para Streamlit Cloud</li>
+    </ul>
+  </div>
+
+  <!-- DATASET -->
+  <div class="card">
+    <div class="card-title"><span class="dot" style="background:var(--accent2)"></span>Dataset</div>
+    <div style="font-size:13px;color:var(--muted);margin-bottom:12px;line-height:1.5">
+      <strong style="color:var(--text)">Chest X-Ray Images (Pneumonia)</strong><br>
+      Kermany et al. (2018) · Guangzhou Women and Children's Medical Center<br>
+      Radiografías anteroposteriores, pacientes pediátricos 1–5 años
+    </div>
+    <div style="display:flex;gap:16px;justify-content:space-around;margin-bottom:12px">
+      <div class="ds-stat"><div class="ds-num">5 216</div><div class="ds-label">imágenes únicas</div></div>
+      <div class="ds-stat"><div class="ds-num">70/15/15</div><div class="ds-label">train/val/test</div></div>
+      <div class="ds-stat"><div class="ds-num">2</div><div class="ds-label">clases</div></div>
+    </div>
+    <div class="ds-bar">
+      <div class="ds-bar-neumonia"></div>
+      <div class="ds-bar-normal"></div>
+    </div>
+    <div class="ds-bar-labels">
+      <span style="color:var(--accent4)">■ Neumonía 74 %</span>
+      <span style="color:var(--accent2)">■ Normal 26 %</span>
+    </div>
+    <div style="margin-top:10px;font-size:11px;color:var(--muted)">
+      Gestión con <strong style="color:var(--text)">DuckDB</strong> (EDA SQL) ·
+      Deduplicación por hash MD5 · Partición <strong style="color:var(--text)">por paciente</strong>
+      (StratifiedGroupKFold) para evitar data leakage
+    </div>
+  </div>
+
+  <!-- HALLAZGOS EDA -->
+  <div class="card">
+    <div class="card-title"><span class="dot" style="background:var(--accent3)"></span>Hallazgos EDA</div>
+    <div class="eda-items">
+      <div class="eda-item"><span class="eda-num">1</span><span class="eda-text">Dataset Kaggle duplicado — deduplicación por hash MD5 obligatoria antes de particionar</span></div>
+      <div class="eda-item"><span class="eda-num">2</span><span class="eda-text">Desbalance <strong>3:1</strong> → pesos de clase inversos en CrossEntropyLoss + priorizar F1 / recall</span></div>
+      <div class="eda-item"><span class="eda-num">3</span><span class="eda-text">Pacientes con <strong>varias radiografías</strong>: partición por imagen → métricas infladas; corregido con StratifiedGroupKFold</span></div>
+      <div class="eda-item"><span class="eda-num">4</span><span class="eda-text">Split val original = 16 imgs — insuficiente; se rehizo la partición completa</span></div>
+      <div class="eda-item"><span class="eda-num">5</span><span class="eda-text">Dimensiones originales variables → normalización obligatoria a 224×224</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ FLUJO METODOLÓGICO ══════════ -->
+<div class="card" style="margin-bottom:16px">
+  <div class="card-title"><span class="dot" style="background:var(--accent)"></span>Flujo metodológico</div>
+  <div class="flow-steps">
+    <div class="flow-step">
+      <div class="flow-num">PASO 1</div>
+      <div class="flow-name">Exploración y gestión SQL</div>
+      <div class="flow-tech">DuckDB · EDA · hash MD5 · deduplicación</div>
+    </div>
+    <div class="flow-step">
+      <div class="flow-num">PASO 2</div>
+      <div class="flow-name">Preparación y pipeline</div>
+      <div class="flow-tech">StratifiedGroupKFold · data augmentation · caché en RAM</div>
+    </div>
+    <div class="flow-step">
+      <div class="flow-num">PASO 3</div>
+      <div class="flow-name">Modelado neuronal</div>
+      <div class="flow-tech">CNN base + EfficientNet-B0 · fine-tuning 2 fases · AdamW · AMP</div>
+    </div>
+    <div class="flow-step">
+      <div class="flow-num">PASO 4</div>
+      <div class="flow-name">Evaluación y métricas</div>
+      <div class="flow-tech">F1 · Recall · ROC-AUC · ajuste de umbral · CAM / Grad-CAM</div>
+    </div>
+    <div class="flow-step">
+      <div class="flow-num">PASO 5</div>
+      <div class="flow-name">Despliegue Streamlit</div>
+      <div class="flow-tech">ONNX (~18 MB) · metadatos JSON · Streamlit Cloud</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ FILA 2: ARQUITECTURA + AUGMENTATION + MÉTRICAS ══════════ -->
+<div class="grid-2">
+
+  <!-- ARQUITECTURA + COMPARATIVA -->
+  <div class="card">
+    <div class="card-title"><span class="dot" style="background:var(--accent)"></span>Arquitectura — EfficientNet-B0 (modelo final)</div>
+    <div class="arch-flow">
+      <div class="arch-block">
+        <div class="ab-name">Entrada</div>
+        <div class="ab-desc">224×224 px<br>3 canales (gris→RGB)</div>
+      </div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-block highlight">
+        <div class="ab-name">EfficientNet-B0</div>
+        <div class="ab-desc">ImageNet pretrain<br>MBConv + SE · ~4 M params</div>
+      </div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-block">
+        <div class="ab-name">GAP</div>
+        <div class="ab-desc">Global Avg Pooling<br>→ 1 280 features</div>
+      </div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-block">
+        <div class="ab-name">Cabeza</div>
+        <div class="ab-desc">Dropout(0.3)<br>Linear(1280, 2)</div>
+      </div>
+    </div>
+    <div class="params-row">
+      <span class="param-pill">Parámetros: <span>~4 M</span></span>
+      <span class="param-pill">Optimizador: <span>AdamW</span></span>
+      <span class="param-pill">Loss: <span>CrossEntropy ponderada</span></span>
+      <span class="param-pill">Scheduler: <span>CosineAnnealingLR</span></span>
+      <span class="param-pill">Fine-tuning: <span>2 fases</span></span>
+      <span class="param-pill">Early stopping: <span>F1-macro val</span></span>
+    </div>
+
+    <div style="margin-top:16px">
+      <div class="card-title" style="margin-bottom:8px"><span class="dot" style="background:var(--accent3)"></span>Comparativa modelos</div>
+      <table class="compare-table">
+        <thead>
+          <tr>
+            <th>Modelo</th><th>Accuracy</th><th>F1-macro</th><th>Recall</th><th>ROC-AUC</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>CNN base (desde cero)</td>
+            <td class="metric">~86 %</td>
+            <td class="metric">~0.84</td>
+            <td class="metric">~0.90</td>
+            <td class="metric">~0.93</td>
+          </tr>
+          <tr class="winner">
+            <td>⭐ EfficientNet-B0</td>
+            <td class="metric">&gt; 94 %</td>
+            <td class="metric">&gt; 0.93</td>
+            <td class="metric">&gt; 0.96</td>
+            <td class="metric">&gt; 0.97</td>
+          </tr>
+        </tbody>
+      </table>
+      <div style="font-size:10.5px;color:var(--muted);margin-top:6px">
+        * Métricas en conjunto de prueba con umbral ajustado en validación (barrido 0.05–0.95)
+      </div>
+    </div>
+  </div>
+
+  <!-- AUGMENTATION + MÉTRICAS PRINCIPALES -->
+  <div style="display:flex;flex-direction:column;gap:16px">
+
+    <!-- DATA AUGMENTATION -->
+    <div class="card">
+      <div class="card-title"><span class="dot" style="background:var(--accent2)"></span>Data augmentation (solo entrenamiento)</div>
+      <div class="aug-list">
+        <div class="aug-row"><span class="aug-tag">RandomResizedCrop 0.80–1.0</span><span class="aug-why">Variaciones de encuadre del equipo</span></div>
+        <div class="aug-row"><span class="aug-tag">RandomRotation ±10°</span><span class="aug-why">Posición imperfecta del paciente</span></div>
+        <div class="aug-row"><span class="aug-tag">ColorJitter brillo/contraste ±20 %</span><span class="aug-why">Diferencias de exposición RX</span></div>
+        <div class="aug-row"><span class="aug-tag">RandomAffine traslación ±5 %</span><span class="aug-why">Centrado variable del tórax</span></div>
+        <div class="aug-row"><span class="aug-tag" style="color:#f08080;border-color:rgba(224,93,93,0.3);background:rgba(224,93,93,0.08)">Sin volteo horizontal ✗</span><span class="aug-why">Corazón izquierdo — dextrocardia irreal</span></div>
+        <div class="aug-row"><span class="aug-tag">Grayscale(3) + Normalize ImageNet</span><span class="aug-why">Red espera 3 canales con μ/σ ImageNet</span></div>
+      </div>
+    </div>
+
+    <!-- MÉTRICAS PRINCIPALES -->
+    <div class="card">
+      <div class="card-title"><span class="dot" style="background:var(--accent4)"></span>Métricas principales — EfficientNet-B0</div>
+      <div class="metrics-grid">
+        <div class="metric-card">
+          <div class="metric-val" style="color:var(--accent2)">&gt;94 %</div>
+          <div class="metric-name">Accuracy</div>
+          <div class="metric-sub">Conjunto de prueba</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-val" style="color:var(--accent)">&gt;0.93</div>
+          <div class="metric-name">F1-macro</div>
+          <div class="metric-sub">Ponderado por clase</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-val" style="color:var(--accent3)">&gt;0.96</div>
+          <div class="metric-name">Recall (sensibilidad)</div>
+          <div class="metric-sub">Prioridad clínica</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-val" style="color:var(--accent4)">&gt;0.97</div>
+          <div class="metric-name">ROC-AUC</div>
+          <div class="metric-sub">Umbral ajustado en val</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════ FILA 3: APP PREVIEW + CONCLUSIONES ══════════ -->
+<div class="grid-2">
+
+  <!-- APP PREVIEW -->
+  <div class="card">
+    <div class="card-title"><span class="dot" style="background:var(--accent2)"></span>Vista previa — Negatoscopio IA (Streamlit)</div>
+    <div class="app-preview">
+      <div class="app-bar">
+        <div class="app-dot" style="background:#ff5f56"></div>
+        <div class="app-dot" style="background:#ffbd2e"></div>
+        <div class="app-dot" style="background:#27c93f"></div>
+        <span class="app-title">🫁 Negatoscopio IA — Detección de neumonía</span>
+      </div>
+      <div class="app-body">
+        <div class="app-upload">
+          <div class="app-upload-icon">📂</div>
+          <div class="app-upload-text">Arrastra tu radiografía de tórax (.jpg / .png)<br>o haz clic para seleccionar</div>
+        </div>
+        <div class="app-result">
+          <div class="app-result-icon">⚠️</div>
+          <div class="app-result-text">
+            <div class="app-result-title">NEUMONÍA DETECTADA</div>
+            <div class="app-result-sub">Probabilidad: 0.94 · Umbral operativo: 0.42 · Subtipo: bacteria</div>
+          </div>
+        </div>
+        <div class="app-heatmap">
+          <span class="hm-label">🔥 Mapa de calor CAM — zonas que activaron la predicción</span>
+        </div>
+        <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap">
+          <div style="background:rgba(79,142,247,0.1);border:1px solid rgba(79,142,247,0.2);border-radius:6px;padding:6px 10px;font-size:11px;color:#7eb8ff;flex:1;text-align:center">
+            📊 Curvas aprendizaje
+          </div>
+          <div style="background:rgba(52,200,138,0.08);border:1px solid rgba(52,200,138,0.15);border-radius:6px;padding:6px 10px;font-size:11px;color:#5fd4a0;flex:1;text-align:center">
+            🗂️ Matriz confusión
+          </div>
+          <div style="background:rgba(247,201,79,0.08);border:1px solid rgba(247,201,79,0.15);border-radius:6px;padding:6px 10px;font-size:11px;color:#f7c94f;flex:1;text-align:center">
+            📈 Curva ROC
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:12px;font-size:11.5px;color:var(--muted);line-height:1.6">
+      Modelo exportado a <strong style="color:var(--text)">ONNX (~18 MB)</strong> — carga con
+      <code style="background:var(--card2);padding:1px 6px;border-radius:4px;color:var(--accent)">onnxruntime</code>
+      sin instalar PyTorch (~800 MB). Incluye <strong style="color:var(--text)">mapas CAM</strong>
+      calculados desde los pesos de la capa lineal (equivalente a Grad-CAM en EfficientNet con GAP).
+    </div>
+  </div>
+
+  <!-- CONCLUSIONES -->
+  <div class="card">
+    <div class="card-title"><span class="dot" style="background:var(--accent3)"></span>Conclusiones</div>
+    <ul class="concl-list">
+      <li>
+        <span class="concl-num">1</span>
+        <span class="concl-text"><strong>Transfer learning &gt; entrenamiento desde cero:</strong>
+        EfficientNet-B0 supera a la CNN base en F1-macro y AUC con menos épocas, reutilizando
+        filtros de bordes/texturas de ImageNet — decisivo con solo ~5 000 imágenes.</span>
+      </li>
+      <li>
+        <span class="concl-num">2</span>
+        <span class="concl-text"><strong>Rigor en la partición:</strong>
+        Deduplicación por hash + partición por paciente evitan fuga de datos. Las métricas
+        reportadas son estimación honesta en pacientes nunca vistos.</span>
+      </li>
+      <li>
+        <span class="concl-num">3</span>
+        <span class="concl-text"><strong>Sensibilidad como prioridad clínica:</strong>
+        En tamizaje un falso negativo (neumonía no detectada) es más costoso que un falso
+        positivo. Pesos de clase + umbral ajustado en validación equilibran ambos.</span>
+      </li>
+      <li>
+        <span class="concl-num">4</span>
+        <span class="concl-text"><strong>Explicabilidad CAM:</strong>
+        Mapas de activación permiten verificar que el modelo atiende los campos
+        pulmonares y detectar posibles atajos (<em>shortcut learning</em>).</span>
+      </li>
+      <li>
+        <span class="concl-num">5</span>
+        <span class="concl-text"><strong>Limitaciones:</strong>
+        Población pediátrica de un único centro, proyección AP y etiquetas sin confirmación
+        de laboratorio. Herramienta de <strong>apoyo académico</strong> — no sustituye
+        criterio radiológico; uso clínico exigiría validación externa.</span>
+      </li>
+    </ul>
+
+    <!-- ENLACES -->
+    <div style="margin-top:16px">
+      <div class="card-title" style="margin-bottom:0"><span class="dot" style="background:var(--accent)"></span>Recursos del proyecto</div>
+    </div>
+    <div class="links-row">
+      <a class="link-btn" href="https://aca2-neumonia-cnn.streamlit.app/" target="_blank">
+        <span class="link-icon">🫁</span>
+        <span>
+          <span class="link-label">Aplicación Streamlit</span>
+          <span class="link-url">aca2-neumonia-cnn.streamlit.app</span>
+        </span>
+      </a>
+      <a class="link-btn" href="https://github.com/ingnelsonruiz/ACA2_Neumonia_CNN.git" target="_blank">
+        <span class="link-icon">💻</span>
+        <span>
+          <span class="link-label">Repositorio GitHub</span>
+          <span class="link-url">ingnelsonruiz/ACA2_Neumonia_CNN</span>
+        </span>
+      </a>
+      <a class="link-btn" href="https://colab.research.google.com/drive/1HYELbHC5E_wl1brlo67XY3rnUXFxwnUT?usp=sharing" target="_blank">
+        <span class="link-icon">📓</span>
+        <span>
+          <span class="link-label">Notebook Google Colab</span>
+          <span class="link-url">ACA2_Neumonia_CNN.ipynb</span>
+        </span>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ FOOTER ══════════ -->
+<div class="footer">
+  CUN · Especialización en Inteligencia Artificial · Asignatura: Aprendizaje Automático · Docente: Hamilton Rivera Flor · 2024
+  &nbsp;·&nbsp; Dataset: Chest X-Ray Images (Kermany et al., 2018 · Mooney, 2018, Kaggle) · PyTorch · ONNX Runtime · DuckDB · Streamlit
+</div>
+
+</body>
+</html>
